@@ -22,7 +22,7 @@ function createConnection()
 	$servername = "localhost";
 	$username = "root";
 	$password = "";
-	$dbname = "myDB";
+	$dbname = "mydb";
 	// Create connection
 	$conn = new mysqli($servername, $username, $password, $dbname);
 	
@@ -42,23 +42,25 @@ function endConnection($conn)
 }
 
 //returns object containing user information or false if user not found
-function getUser($username, $password)
+function getUser($name, $password)
 {
 	$conn = createConnection();
 	if ($conn->connect_error) 
 	{
-		return $conn->error;
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
 	}
 	
 	$sql = "SELECT *
-	FROM Users WHERE username='$username' 
+	FROM user WHERE name='$name' 
 	AND password='$password'";
 	$result = $conn->query($sql);
 	
 	if ($result->num_rows > 0)
 	{
 		$row = $result->fetch_assoc();
-		$user = new User($row["sid"], $row["username"], $row["password"], $row["email"]);
+		$user = new User($row["sid"], $row["name"], $row["password"], $row["email"]);
 		endConnection($conn);
 		return $user;
 	}
@@ -69,12 +71,52 @@ function getUser($username, $password)
 	}
 	
 	
+	$error = $conn->error;
 	endConnection($conn);
-	return $result->error;
+	return $error;
 }
 
 //returns true if user accounnt was created or false if username is taken 
-function createUser($username, $password, $email)
+function createUser($name, $password, $email)
+{
+	$conn = createConnection();
+	if ($conn->connect_error) 
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	
+	$sql = "SELECT * FROM user
+	WHERE name = '$name'";
+	$result = $conn->query($sql);
+	
+	//username taken
+	if ($result->num_rows > 0)
+	{
+		endConnection($conn);
+		return FALSE;
+	}
+	else 
+	{
+		$result->close();
+		$sql = "INSERT INTO user (name, password, email)
+		VALUES('$name', '$password', '$email')";
+		$result = $conn->query($sql);
+		if ($result == TRUE)
+		{
+			endConnection($conn);
+			return TRUE;
+		}
+	}
+	
+	$error = $conn->error;
+	endConnection($conn);
+	return $error;
+}
+
+//returns true if university created successfully or false if name is taken
+function createUniversity($name, $location, $description, $students)
 {
 	$conn = createConnection();
 	if ($conn->connect_error) 
@@ -82,8 +124,8 @@ function createUser($username, $password, $email)
 		return $conn->error;
 	}
 	
-	$sql = "SELECT * FROM Users
-	WHERE username = '$username'";
+	$sql = "SELECT * FROM University
+	WHERE name = '$name'";
 	$result = $conn->query($sql);
 	
 	//username taken
@@ -95,13 +137,13 @@ function createUser($username, $password, $email)
 	else 
 	{
 		 $result->close();
-		$sql = "INSERT INTO Users (username, password, email)
-		VALUES('$username', '$password', '$email')";
+		$sql = "INSERT INTO University (name, location, description, students)
+		VALUES('$name', '$location', '$description', '$students')";
 		$result = $conn->query($sql);
 		if ($result == TRUE)
 		{
 			endConnection($conn);
-			return TRUE;
+			return true;
 		}
 	}
 	
@@ -110,50 +152,13 @@ function createUser($username, $password, $email)
 	return $result->error;
 }
 
-//returns object containing university information or false if name is taken
-function createUniversity($name, $location, $description, $students)
-{
-	$conn = createConnection();
-	if ($conn->connect_error) 
-	{
-		return "error connecting";
-	}
-	
-	$sql = "SELECT * FROM University
-	WHERE name = '$name'";
-	$result = $conn->query($sql);
-	
-	//username taken
-	if ($result->num_rows > 0)
-	{
-		endConnection($conn);
-		return "University Name Taken.";
-	}
-	else 
-	{
-		 $result->close();
-		$sql = "INSERT INTO University (name, location, description, students)
-		VALUES('$name', '$location', '$description', '$students')";
-		$result = $conn->query($sql);
-		if ($result == TRUE)
-		{
-			endConnection($conn);
-			return "University Created.";
-		}
-	}
-	
-	
-	endConnection($conn);
-	return "tattateatata";
-}
-
-
+//returns university object or false if could not be found
 function getUniversity($name)
 {
 	$conn = createConnection();
 	if ($conn->connect_error) 
 	{
-		return "error connecting";
+		return $conn->error;
 	}
 	
 	$sql = "SELECT *
@@ -167,12 +172,12 @@ function getUniversity($name)
 	else 
 	{
 		endConnection($conn);
-		return "not found";
+		return false;
 	}
 	
 	
 	endConnection($conn);
-	return "tacos";
+	return $result->error;
 }
 
 function createEvent($time, $date, $e_name, $category, $e_desc, $contact_phone, $contact_email, $type, $up_votes, $d_votes, $super_approval, $admin_approval)
@@ -180,7 +185,7 @@ function createEvent($time, $date, $e_name, $category, $e_desc, $contact_phone, 
 	$conn = createConnection();
 	if ($conn->connect_error) 
 	{
-		return "error connecting";
+		return $conn->error;
 	}
 	
 	$sql = "SELECT * FROM Event
@@ -191,24 +196,24 @@ function createEvent($time, $date, $e_name, $category, $e_desc, $contact_phone, 
 	if ($result->num_rows > 0)
 	{
 		endConnection($conn);
-		return "Event Time Taken.";
+		return false;
 	}
 	else 
 	{//check time function
 		$result->close();
 		$sql = "INSERT INTO Event (time, date, e_name, category, e_desc, contact_phone, contact_email, type, up_votes, d_votes, super_approval, admin_approval)
-		VALUES(time(), '$date', '$e_name', '$category', '$e_desc', '$contact_phone', '$contact_email', '$type', '$up_votes', '$d_votes', '$super_approval', '$admin_approval')";
+		VALUES($time, '$date', '$e_name', '$category', '$e_desc', '$contact_phone', '$contact_email', '$type', '$up_votes', '$d_votes', '$super_approval', '$admin_approval')";
 		$result = $conn->query($sql);
 		if ($result == TRUE)
 		{
 			endConnection($conn);
-			return "Event Created.";
+			return true;
 		}
 	}
 	
 	
 	endConnection($conn);
-	return "tattateatata";
+	return $result->error;
 }
 
 function getEvent($time)
@@ -216,7 +221,7 @@ function getEvent($time)
 	$conn = createConnection();
 	if ($conn->connect_error) 
 	{
-		return "error connecting";
+		return $conn->error;
 	}
 	
 	$sql = "SELECT *
@@ -225,17 +230,17 @@ function getEvent($time)
 	
 	if ($result->num_rows > 0)
 	{
-		return "event found";
+		return true;
 	}
 	else 
 	{
 		endConnection($conn);
-		return "not found";
+		return false;
 	}
 	
 	
 	endConnection($conn);
-	return "tacos";
+	return $result->error;
 }
 
 function createLocation($loc_name, $latitude, $longitude)
@@ -243,7 +248,7 @@ function createLocation($loc_name, $latitude, $longitude)
 	$conn = createConnection();
 	if ($conn->connect_error) 
 	{
-		return "error connecting";
+		return $conn->error;
 	}
 	
 	$sql = "SELECT * FROM Location
@@ -254,7 +259,7 @@ function createLocation($loc_name, $latitude, $longitude)
 	if ($result->num_rows > 0)
 	{
 		endConnection($conn);
-		return "Location Taken.";
+		return false;
 	}
 	else 
 	{
@@ -265,13 +270,13 @@ function createLocation($loc_name, $latitude, $longitude)
 		if ($result == TRUE)
 		{
 			endConnection($conn);
-			return "Event Created.";
+			return true;
 		}
 	}
 	
 	
 	endConnection($conn);
-	return "tattateatata";
+	return $result->error;
 }
 
 function getLocation($loc_name)
@@ -279,7 +284,7 @@ function getLocation($loc_name)
 	$conn = createConnection();
 	if ($conn->connect_error) 
 	{
-		return "error connecting";
+		return $conn->error;
 	}
 	
 	$sql = "SELECT *
@@ -293,12 +298,12 @@ function getLocation($loc_name)
 	else 
 	{
 		endConnection($conn);
-		return "not found";
+		return false;
 	}
 	
 	
 	endConnection($conn);
-	return "tacos";
+	return $result->error;
 }
 
 function getRSO($name)
@@ -306,7 +311,7 @@ function getRSO($name)
 	$conn = createConnection();
 	if ($conn->connect_error) 
 	{
-		return "error connecting";
+		return $conn->error;
 	}
 	
 	$sql = "SELECT *
@@ -320,7 +325,7 @@ function getRSO($name)
 	else 
 	{
 		endConnection($conn);
-		return "not found";
+		return false;
 	}
 	
 	
@@ -333,7 +338,7 @@ function createRSO($r_name, $s_count, $university, $rso_desc)
 	$conn = createConnection();
 	if ($conn->connect_error) 
 	{
-		return "error connecting";
+		return $conn->error;
 	}
 	
 	$sql = "SELECT * FROM RSO
@@ -344,7 +349,7 @@ function createRSO($r_name, $s_count, $university, $rso_desc)
 	if ($result->num_rows > 0)
 	{
 		endConnection($conn);
-		return "RSO Name Taken.";
+		return false;
 	}
 	else 
 	{
@@ -355,11 +360,11 @@ function createRSO($r_name, $s_count, $university, $rso_desc)
 		if ($result == TRUE)
 		{
 			endConnection($conn);
-			return "RSO Created.";
+			return true;
 		}
 	}
 	
 	
 	endConnection($conn);
-	return "tattateatata";
+	return $result->error;
 }
