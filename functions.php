@@ -47,7 +47,7 @@ function getUser($username, $password)
 	$conn = createConnection();
 	if ($conn->connect_error) 
 	{
-		return "error connecting";
+		return $conn->error;
 	}
 	
 	$sql = "SELECT *
@@ -70,16 +70,16 @@ function getUser($username, $password)
 	
 	
 	endConnection($conn);
-	return $conn->error;
+	return $result->error;
 }
 
-//returns object containing user information or false if username is taken 
+//returns true if user accounnt was created or false if username is taken 
 function createUser($username, $password, $email)
 {
 	$conn = createConnection();
 	if ($conn->connect_error) 
 	{
-		return "error connecting";
+		return $conn->error;
 	}
 	
 	$sql = "SELECT * FROM Users
@@ -90,7 +90,7 @@ function createUser($username, $password, $email)
 	if ($result->num_rows > 0)
 	{
 		endConnection($conn);
-		return "Username Taken.";
+		return false;
 	}
 	else 
 	{
@@ -101,13 +101,13 @@ function createUser($username, $password, $email)
 		if ($result == TRUE)
 		{
 			endConnection($conn);
-			return "Account Created.";
+			return TRUE;
 		}
 	}
 	
 	
 	endConnection($conn);
-	return "tattateatata";
+	return $result->error;
 }
 
 //returns object containing university information or false if name is taken
