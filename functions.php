@@ -33,7 +33,7 @@ class University
     }
 }
 
-class Event
+class Event_Location
 {
 		public $time;
 		public $date;
@@ -47,8 +47,11 @@ class Event
 		public $d_votes;
 		public $super_approval;
 		public $admin_approval;
+		public $loc_name;
+		public $latitude;
+		public $longitude;
 		
-	public function __construct($time, $date, $e_name, $category, $e_desc, $contact_phone, $contact_email, $type, $up_votes, $d_votes, $super_approval, $admin_approval) 
+	public function __construct($time, $date, $e_name, $category, $e_desc, $contact_phone, $contact_email, $type, $up_votes, $d_votes, $super_approval, $admin_approval, $loc_name, $latitude, $longitude) 
 	{
               $this->time = $time;
 			  $this->date = $date;
@@ -62,6 +65,9 @@ class Event
 			  $this->d_votes = $d_votes;
 			  $this->super_approval = $super_approval;
 			  $this->admin_approval = $admin_approval;
+			  $this->loc_name = $loc_name;
+			  $this->latitude = $latitude;
+			  $this->longitude = $longitude;
     }
 }
 // do not call this directly
@@ -87,6 +93,85 @@ function endConnection($conn)
 {
 	$conn->close();
 	return;
+}
+
+function createEvent($time, $date, $e_name, $category, $e_desc, $contact_phone, $contact_email, $type, $loc_name, $latitude, $longitude)
+{
+	$conn = createConnection();
+	
+	
+	
+	if ($conn->connect_error) 
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	
+	$sql = "SELECT * FROM event
+	WHERE time = '$time'";
+	$result = $conn->query($sql);
+	
+	//Event Conflict 
+	if ($result->num_rows == 0)
+	{
+		$result->close();
+		$sql = "SELECT * FROM location
+		WHERE name = '$loc_name'";
+		$result = $conn->query($sql);
+		
+		if ($result->num_rows == 0)
+		{
+			$result->close();
+			$sql = "INSERT INTO event (time, date, name, category, description, contact_phone, contact_email, type, super_approval, admin_approval, up, down)
+			VALUES('$time', '$date', '$e_name', '$category', '$e_desc', '$contact_phone', '$contact_email', '$type', 0, 0, 0, 0)";
+			$result = $conn->query($sql);
+			
+			if ($result == TRUE)
+			{
+				//$result->close();
+				$sql = "INSERT INTO location (name, latitude, longitude)
+				VALUES('$loc_name', '$latitude', '$longitude')";
+				$result = $conn->query($sql);
+				
+				if ($result == TRUE)
+				{
+					//$result->close();
+					$sql = "INSERT INTO have_location (time, name)
+					VALUES('$time', '$loc_name')";
+					$result = $conn->query($sql);
+					if ($result == TRUE)
+					{
+						return true;
+					}
+					else
+					{
+						$error = $conn->error;
+						endConnection($conn);
+						return $error;
+					}
+				}
+			}
+			
+		}
+		else
+		{
+			$error = $conn->error;
+			endConnection($conn);
+			return $error;
+		}
+		
+	}
+	else
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	
+	$error = $conn->error;
+	endConnection($conn);
+	return $error;
 }
 
 //returns true if user accounnt was created or false if username is taken 
@@ -336,74 +421,7 @@ function getUniversity($name)
 	
 }
 	
-function createEvent($time, $date, $e_name, $category, $e_desc, $contact_phone, $contact_email, $type, $up_votes, $d_votes, $super_approval, $admin_approval)
-{
-	$conn = createConnection();
-	if ($conn->connect_error) 
-	{
-		$error = $conn->error;
-		endConnection($conn);
-		return $error;
-	}
-	
-	$sql = "SELECT * FROM Event
-	WHERE time = '$time'";
-	$result = $conn->query($sql);
-	
-	//username taken
-	if ($result->num_rows > 0)
-	{
-		endConnection($conn);
-		return false;
-	}
-	else 
-	{//check time function
-		$result->close();
-		$sql = "INSERT INTO Event (time, date, e_name, category, e_desc, contact_phone, contact_email, type, up_votes, d_votes, super_approval, admin_approval)
-		VALUES($time, '$date', '$e_name', '$category', '$e_desc', '$contact_phone', '$contact_email', '$type', '$up_votes', '$d_votes', '$super_approval', '$admin_approval')";
-		$result = $conn->query($sql);
-		if ($result == TRUE)
-		{
-			endConnection($conn);
-			return true;
-		}
-	}
-	
-	
-	$error = $conn->error;
-		endConnection($conn);
-		return $error;
-}
 
-function getEvent($time)
-{
-	$conn = createConnection();
-	if ($conn->connect_error) 
-	{
-		$error = $conn->error;
-		endConnection($conn);
-		return $error;
-	}
-	
-	$sql = "SELECT *
-	FROM Event WHERE time='$time'";
-	$result = $conn->query($sql);
-	
-	if ($result->num_rows > 0)
-	{
-		return true;
-	}
-	else 
-	{
-		endConnection($conn);
-		return false;
-	}
-	
-	
-	$error = $conn->error;
-		endConnection($conn);
-		return $error;
-}
 
 function createLocation($loc_name, $latitude, $longitude)
 {
