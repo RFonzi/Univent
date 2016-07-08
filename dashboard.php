@@ -16,8 +16,8 @@
 		</div>
 	
 	
-	
-	<select name="list" id="list" accesskey="target">
+	<form name="menuOp" method="post" onsubmit="location.reload()">
+	<select name="list">
 		<option value='none' selected>Choose your destiny.</option>
 		<option value="viewAll">View All Events</option>
 		<option value="viewPublic">View Public Events</option>
@@ -28,35 +28,38 @@
 		<option value="createEvent">Create Event</option>
 		<option value="createUniv">Create University</option>
 	</select>
-	<input type=button value="Go" onclick="makeTheTable()"/>
+	<input type='submit' name='submit'\>
+	</form>
+	
 	
 	<h1>This is where the table goes</h1>
 	
 	<?php
-		function makeTheTable()
-		{
-			if($_POST['list']==viewAll)
-				$arrayOfData = getAllEvents($user);
-			if($_POST['list']==viewPublic)
-				$arrayOfData = getPublicEvents($user);
-			if($_POST['list']==viewPrivate)
-				$arrayOfData = getPrivateEvents($user);
-			if($_POST['list']==viewRSO)
-				$arrayOfData = getRSOevents($user);
+			
+			
+			if($_POST['list']=="viewAll")
+				echo "test";
+				//$arrayOfData = getAllEvents($user);
+			if($_POST['list']=="viewPublic")
+				//$arrayOfData = getPublicEvents($user);
+			if($_POST['list']=="viewPrivate")
+				//$arrayOfData = getPrivateEvents($user);
+			if($_POST['list']=="viewRSO")
+				//$arrayOfData = getRSOevents($user);
 				
 			//createTable($arrayOfData);
 				
-			if($_POST['list']==joinRSO)
-				$didJoin = joinRSO($user);
+			if($_POST['list']=="joinRSO")
+				//$didJoin = joinRSO($user);
 				//do confirmation here
-			if($_POST['list']==createRSO)
-				$arrayOfData = ($user);
-			if($_POST['list']==createEvent)
-				$arrayOfData = getAllEvents($user);
-			if($_POST['list']==createUniv)
-				$arrayOfData = getAllEvents($user);
+			if($_POST['list']=="createRSO")
+				//new page for create rso redirect here
+			if($_POST['list']=="createEvent")
+				//new page for create event redirect here
+			if($_POST['list']=="createUniv")
+				//new page for create univ redirect here
 			
-		}
+		
 		
 		
 	?>
