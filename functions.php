@@ -95,6 +95,91 @@ function endConnection($conn)
 	return;
 }
 
+function getUserLevel($sid)
+{
+	$conn = createConnection();
+	if ($conn->connect_error) 
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	
+	$sql = "SELECT *
+	FROM super_admin WHERE sid = '$sid'";
+	$result = $conn->query($sql);
+	if ($result->num_rows > 0)
+	{
+		endConnection($conn);
+		return 3;
+	}
+	
+	$result->close();
+	
+	$sql = "SELECT *
+	FROM admin WHERE sid = '$sid'";
+	$result = $conn->query($sql);
+	if ($result->num_rows > 0)
+	{
+		endConnection($conn);
+		return 2;
+	}
+	$result->close();
+	
+	$sql = "SELECT *
+	FROM student WHERE sid = '$sid'";
+	$result = $conn->query($sql);
+	if ($result->num_rows > 0)
+	{
+		endConnection($conn);
+		return 1;
+	}
+	
+	$sql = "SELECT *
+	FROM user WHERE sid = '$sid'";
+	$result = $conn->query($sql);
+	if ($result->num_rows > 0)
+	{
+		endConnection($conn);
+		return 0;
+	}
+	
+	return -1;
+}
+
+function getAllEvents($sid)
+{
+	$conn = createConnection();
+	if ($conn->connect_error) 
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	
+	$sql = "SELECT *
+	FROM ";
+	$result = $conn->query($sql);
+	
+	if ($result->num_rows > 0)
+	{
+		$row = $result->fetch_assoc();
+		$user = new User($row["sid"], $row["name"], $row["password"], $row["email"]);
+		endConnection($conn);
+		return $user;
+	}
+	else 
+	{
+		endConnection($conn);
+		return FALSE;
+	}
+	
+	
+	$error = $conn->error;
+	endConnection($conn);
+	return $error;
+}
+
 function createEvent($time, $date, $e_name, $category, $e_desc, $contact_phone, $contact_email, $type, $loc_name, $latitude, $longitude)
 {
 	$conn = createConnection();
@@ -108,16 +193,13 @@ function createEvent($time, $date, $e_name, $category, $e_desc, $contact_phone, 
 		return $error;
 	}
 	
-	$sql = "SELECT * FROM event
-	WHERE time = '$time'";
-	$result = $conn->query($sql);
 	
 	//Event Conflict 
-	if ($result->num_rows == 0)
-	{
-		$result->close();
-		$sql = "SELECT * FROM location
-		WHERE name = '$loc_name'";
+	
+	
+		
+		$sql = "SELECT * FROM have_location
+		WHERE name = '$loc_name' AND time = $time";
 		$result = $conn->query($sql);
 		
 		if ($result->num_rows == 0)
@@ -144,12 +226,6 @@ function createEvent($time, $date, $e_name, $category, $e_desc, $contact_phone, 
 					{
 						return true;
 					}
-					else
-					{
-						$error = $conn->error;
-						endConnection($conn);
-						return $error;
-					}
 				}
 			}
 			
@@ -158,16 +234,9 @@ function createEvent($time, $date, $e_name, $category, $e_desc, $contact_phone, 
 		{
 			$error = $conn->error;
 			endConnection($conn);
-			return $error;
+			return false;
 		}
 		
-	}
-	else
-	{
-		$error = $conn->error;
-		endConnection($conn);
-		return $error;
-	}
 	
 	$error = $conn->error;
 	endConnection($conn);
