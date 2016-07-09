@@ -5,17 +5,17 @@
 <body>
 <?php include 'functions.php';
 	createUser("test", "test", "testemail");
-	
+
 	//get current user logged in
-	$user = getUser("test", "test");
+	$user = stringToUser($_POST["user"]);
 ?>
 	<div id="pageWrapper">
 		<div id="header">
 			<p id="siteTitle">Univent</p>
 			<p id="signifier">Welcome, <?php print $user->username ?></p>
 		</div>
-	
-	
+
+
 	<form name="menuOp" method="post" onsubmit="location.reload()">
 	<select name="list">
 		<option value='none' selected>Choose your destiny.</option>
@@ -30,13 +30,13 @@
 	</select>
 	<input type='submit' name='submit'\>
 	</form>
-	
-	
+
+
 	<h1>This is where the table goes</h1>
-	
+
 	<?php
-			
-			
+
+
 			if($_POST['list']=="viewAll")
 				echo "test";
 				//$arrayOfData = getAllEvents($user);
@@ -46,9 +46,9 @@
 				//$arrayOfData = getPrivateEvents($user);
 			if($_POST['list']=="viewRSO")
 				//$arrayOfData = getRSOevents($user);
-				
+
 			//createTable($arrayOfData);
-				
+
 			if($_POST['list']=="joinRSO")
 				//$didJoin = joinRSO($user);
 				//do confirmation here
@@ -58,13 +58,12 @@
 				//new page for create event redirect here
 			if($_POST['list']=="createUniv")
 				//new page for create univ redirect here
-			
-		
-		
-		
+
+
+
+
 	?>
-	
+
 	</div>
 </body>
 </html>
-
