@@ -95,6 +95,72 @@ function endConnection($conn)
 	return;
 }
 
+function joinUniversity($name, $user)
+{
+	$conn = createConnection();
+	if ($conn->connect_error) 
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	
+	if(getUserLevel($user->sid) == 3 || getUserLevel($user->sid) == 2 || getUserLevel($user->sid) == 1)
+	{
+		endConnection($conn);
+		return "1";
+	}
+
+	$sql = "SELECT *
+	FROM university WHERE name = '$name'";
+	$result = $conn->query($sql);
+	if ($result->num_rows == 0)
+	{
+		endConnection($conn);
+		return "2";
+	}
+	
+	$result->close();
+	
+	$sql = "SELECT *
+	FROM univ_affil WHERE sid = '$user->sid'";
+	$result = $conn->query($sql);
+	if ($result->num_rows > 0)
+	{
+		endConnection($conn);
+		return "3";
+	}
+	
+	$result->close();
+	
+	$sql = "INSERT INTO student (sid, name, password, email)
+			VALUES('$user->sid', '$user->username', '$user->password', '$user->email')";
+	$result = $conn->query($sql);
+	if ($result == True)
+	{
+		$sql = "INSERT INTO univ_affil (name, sid)
+		VALUES('$name', '$user->sid')";
+		$result = $conn->query($sql);
+		if ($result == True)
+		{
+			$sql = "UPDATE university set students = students + 1 WHERE name = '$name'";
+			$result = $conn->query($sql);
+			if ($result == True)
+			{
+				endConnection($conn);
+				return true;
+			}
+		}
+	}
+	
+	
+	
+	$error = $conn->error;
+	endConnection($conn);
+	return $error;
+	
+}
+
 function createRSO($rname, $uni_name, $rso_desc, $user)
 {
 	$conn = createConnection();
@@ -486,7 +552,7 @@ function createUser($name, $password, $email)
 }
 
 //returns true if university created successfully or false if name is taken
-function createUniversity($name, $location, $description, $students)
+function createUniversity($name, $location, $description, $user)
 {
 	$conn = createConnection();
 	if ($conn->connect_error) 
@@ -496,7 +562,22 @@ function createUniversity($name, $location, $description, $students)
 		return $error;
 	}
 	
-	$sql = "SELECT * FROM University
+	if(getUserLevel($user->sid) != 3)
+	{
+		return false;
+	}
+	
+	$sql = "SELECT * FROM create_profile WHERE sid = '$user->sid'";
+	
+	$result = $conn->query($sql);
+	if ($result->num_rows > 0)
+	{
+		endConnection($conn);
+		return false;
+	}
+	
+	$result->close();
+	$sql = "SELECT * FROM university
 	WHERE name = '$name'";
 	$result = $conn->query($sql);
 	
@@ -508,15 +589,25 @@ function createUniversity($name, $location, $description, $students)
 	}
 	else 
 	{
-		 $result->close();
-		$sql = "INSERT INTO University (name, location, description, students)
-		VALUES('$name', '$location', '$description', '$students')";
+		$result->close();
+		$sql = "INSERT INTO university (name, location, description, students)
+		VALUES('$name', '$location', '$description', 0)";
 		$result = $conn->query($sql);
+		
+		if ($result == TRUE)
+		{
+			//$last_id = $conn->insert_id;
+			//$result->close();
+			$sql = "INSERT INTO create_profile (name, sid)
+			VALUES('$name', '$user->sid')";
+			$result = $conn->query($sql);
+		}
 		if ($result == TRUE)
 		{
 			endConnection($conn);
 			return true;
 		}
+			
 	}
 	
 	
