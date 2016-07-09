@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 09, 2016 at 12:18 AM
+-- Generation Time: Jul 09, 2016 at 04:46 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `location` (
 CREATE TABLE IF NOT EXISTS `ownsrso` (
   `rid` int(11) NOT NULL DEFAULT '0',
   `sid` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`sid`,`rid`),
+  PRIMARY KEY (`sid`),
   KEY `rid` (`rid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -331,7 +331,6 @@ ALTER TABLE `joinsrso`
 -- Constraints for table `ownsrso`
 --
 ALTER TABLE `ownsrso`
-  ADD CONSTRAINT `ownsrso_ibfk_1` FOREIGN KEY (`sid`) REFERENCES `student` (`sid`),
   ADD CONSTRAINT `ownsrso_ibfk_2` FOREIGN KEY (`rid`) REFERENCES `rso` (`rid`);
 
 --
