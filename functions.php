@@ -6,25 +6,30 @@ class User
 	public $username;
 	public $password;
 	public $email;
-	
-	
-	public function __construct($sid, $username, $password, $email) 
+
+	public function __construct($sid, $username, $password, $email)
 	{
-              $this->sid = $sid;
+        $this->sid = $sid;
 			  $this->username = $username;
 			  $this->password = $password;
 			  $this->email = $email;
-    }
+  }
+
+	public function __toString()
+	{
+		return $this->sid . "/" . $this->username . "/" . $this->password . "/" . $this->email;
+	}
+
 }
 
 class University
 {
-	public $name; 
+	public $name;
 	public $location;
 	public $description;
 	public $students;
-	
-	public function __construct($name, $location, $description, $students) 
+
+	public function __construct($name, $location, $description, $students)
 	{
               $this->name = $name;
 			  $this->location = $locaton;
@@ -50,8 +55,8 @@ class Event_Location
 		public $loc_name;
 		public $latitude;
 		public $longitude;
-		
-	public function __construct($time, $date, $e_name, $category, $e_desc, $contact_phone, $contact_email, $type, $up_votes, $d_votes, $super_approval, $admin_approval, $loc_name, $latitude, $longitude) 
+
+	public function __construct($time, $date, $e_name, $category, $e_desc, $contact_phone, $contact_email, $type, $up_votes, $d_votes, $super_approval, $admin_approval, $loc_name, $latitude, $longitude)
 	{
               $this->time = $time;
 			  $this->date = $date;
@@ -79,7 +84,7 @@ function createConnection()
 	$dbname = "mydb";
 	// Create connection
 	$conn = new mysqli($servername, $username, $password, $dbname);
-	
+
 	// Check connection
 	if ($conn->connect_error || $conn == null)
 	{
@@ -95,6 +100,108 @@ function endConnection($conn)
 	return;
 }
 
+function getUserLevel($sid)
+{
+	$conn = createConnection();
+<<<<<<< Updated upstream
+	if ($conn->connect_error) 
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	
+	$sql = "SELECT *
+	FROM super_admin WHERE sid = '$sid'";
+	$result = $conn->query($sql);
+	if ($result->num_rows > 0)
+	{
+		endConnection($conn);
+		return 3;
+	}
+	
+	$result->close();
+	
+	$sql = "SELECT *
+	FROM admin WHERE sid = '$sid'";
+	$result = $conn->query($sql);
+	if ($result->num_rows > 0)
+	{
+		endConnection($conn);
+		return 2;
+	}
+	$result->close();
+	
+	$sql = "SELECT *
+	FROM student WHERE sid = '$sid'";
+	$result = $conn->query($sql);
+	if ($result->num_rows > 0)
+	{
+		endConnection($conn);
+		return 1;
+	}
+	
+	$sql = "SELECT *
+	FROM user WHERE sid = '$sid'";
+	$result = $conn->query($sql);
+	if ($result->num_rows > 0)
+	{
+		endConnection($conn);
+		return 0;
+	}
+	
+	return -1;
+}
+
+function getAllEvents($sid)
+{
+	$conn = createConnection();
+	if ($conn->connect_error) 
+=======
+
+
+
+	if ($conn->connect_error)
+>>>>>>> Stashed changes
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+<<<<<<< Updated upstream
+	
+	$sql = "SELECT *
+	FROM ";
+	$result = $conn->query($sql);
+	
+	if ($result->num_rows > 0)
+=======
+
+	$sql = "SELECT * FROM event
+	WHERE time = '$time'";
+	$result = $conn->query($sql);
+
+	//Event Conflict
+	if ($result->num_rows == 0)
+>>>>>>> Stashed changes
+	{
+		$row = $result->fetch_assoc();
+		$user = new User($row["sid"], $row["name"], $row["password"], $row["email"]);
+		endConnection($conn);
+		return $user;
+	}
+	else 
+	{
+		endConnection($conn);
+		return FALSE;
+	}
+	
+	
+	$error = $conn->error;
+	endConnection($conn);
+	return $error;
+}
+
 function createEvent($time, $date, $e_name, $category, $e_desc, $contact_phone, $contact_email, $type, $loc_name, $latitude, $longitude)
 {
 	$conn = createConnection();
@@ -108,32 +215,29 @@ function createEvent($time, $date, $e_name, $category, $e_desc, $contact_phone, 
 		return $error;
 	}
 	
-	$sql = "SELECT * FROM event
-	WHERE time = '$time'";
-	$result = $conn->query($sql);
 	
 	//Event Conflict 
-	if ($result->num_rows == 0)
-	{
-		$result->close();
-		$sql = "SELECT * FROM location
-		WHERE name = '$loc_name'";
-		$result = $conn->query($sql);
+	
+	
 		
+		$sql = "SELECT * FROM have_location
+		WHERE name = '$loc_name' AND time = $time";
+		$result = $conn->query($sql);
+
 		if ($result->num_rows == 0)
 		{
 			$result->close();
 			$sql = "INSERT INTO event (time, date, name, category, description, contact_phone, contact_email, type, super_approval, admin_approval, up, down)
 			VALUES('$time', '$date', '$e_name', '$category', '$e_desc', '$contact_phone', '$contact_email', '$type', 0, 0, 0, 0)";
 			$result = $conn->query($sql);
-			
+
 			if ($result == TRUE)
 			{
 				//$result->close();
 				$sql = "INSERT INTO location (name, latitude, longitude)
 				VALUES('$loc_name', '$latitude', '$longitude')";
 				$result = $conn->query($sql);
-				
+
 				if ($result == TRUE)
 				{
 					//$result->close();
@@ -144,23 +248,21 @@ function createEvent($time, $date, $e_name, $category, $e_desc, $contact_phone, 
 					{
 						return true;
 					}
-					else
-					{
-						$error = $conn->error;
-						endConnection($conn);
-						return $error;
-					}
 				}
 			}
-			
+
 		}
 		else
 		{
 			$error = $conn->error;
 			endConnection($conn);
-			return $error;
+			return false;
 		}
+<<<<<<< Updated upstream
 		
+	
+=======
+
 	}
 	else
 	{
@@ -168,27 +270,28 @@ function createEvent($time, $date, $e_name, $category, $e_desc, $contact_phone, 
 		endConnection($conn);
 		return $error;
 	}
-	
+
+>>>>>>> Stashed changes
 	$error = $conn->error;
 	endConnection($conn);
 	return $error;
 }
 
-//returns true if user accounnt was created or false if username is taken 
+//returns true if user accounnt was created or false if username is taken
 function createSuperAdmin($name, $password, $email)
 {
 	$conn = createConnection();
-	if ($conn->connect_error) 
+	if ($conn->connect_error)
 	{
 		$error = $conn->error;
 		endConnection($conn);
 		return $error;
 	}
-	
+
 	$sql = "SELECT * FROM user
 	WHERE name = '$name'";
 	$result = $conn->query($sql);
-	
+
 	//username taken
 	if ($result->num_rows > 0)
 	{
@@ -196,30 +299,30 @@ function createSuperAdmin($name, $password, $email)
 		endConnection($conn);
 		return "username taken";
 	}
-	else 
+	else
 	{
 		//$result->close();
 		$sql = "INSERT INTO user (name, password, email)
 		VALUES('$name', '$password', '$email')";
 		$result = $conn->query($sql);
-		
-		
+
+
 		if ($result == TRUE)
 		{
 			$sql = "SELECT * FROM user
 			WHERE name = '$name'";
-			
+
 			$result = $conn->query($sql);
-			
-			
+
+
 			$row = $result->fetch_assoc();
 			$sid = $row["sid"];
 			$result->close();
-			
+
 			$sql = "INSERT INTO super_admin (sid, name, password, email)
 			VALUES('$sid', '$name', '$password','$email')";
 			$result = $conn->query($sql);
-			
+
 			if ($result == TRUE)
 			{
 				$error = $conn->error;
@@ -233,7 +336,7 @@ function createSuperAdmin($name, $password, $email)
 			return "fail";
 		}
 	}
-	
+
 	$error = $conn->error;
 	endConnection($conn);
 	return $error;
@@ -245,17 +348,17 @@ function createSuperAdmin($name, $password, $email)
 function getSuperAdmin($name)
 {
 	$conn = createConnection();
-	if ($conn->connect_error) 
+	if ($conn->connect_error)
 	{
 		$error = $conn->error;
 		endConnection($conn);
 		return $error;
 	}
-	
+
 	$sql = "SELECT *
 	FROM super_admin WHERE name='$name'";
 	$result = $conn->query($sql);
-	
+
 	if ($result->num_rows > 0)
 	{
 		$row = $result->fetch_assoc();
@@ -263,13 +366,13 @@ function getSuperAdmin($name)
 		endConnection($conn);
 		return $user;
 	}
-	else 
+	else
 	{
 		endConnection($conn);
 		return FALSE;
 	}
-	
-	
+
+
 	$error = $conn->error;
 	endConnection($conn);
 	return $error;
@@ -279,18 +382,18 @@ function getSuperAdmin($name)
 function getUser($name, $password)
 {
 	$conn = createConnection();
-	if ($conn->connect_error) 
+	if ($conn->connect_error)
 	{
 		$error = $conn->error;
 		endConnection($conn);
 		return $error;
 	}
-	
+
 	$sql = "SELECT *
-	FROM user WHERE name='$name' 
+	FROM user WHERE name='$name'
 	AND password='$password'";
 	$result = $conn->query($sql);
-	
+
 	if ($result->num_rows > 0)
 	{
 		$row = $result->fetch_assoc();
@@ -298,40 +401,40 @@ function getUser($name, $password)
 		endConnection($conn);
 		return $user;
 	}
-	else 
+	else
 	{
 		endConnection($conn);
 		return FALSE;
 	}
-	
-	
+
+
 	$error = $conn->error;
 	endConnection($conn);
 	return $error;
 }
 
-//returns true if user accounnt was created or false if username is taken 
+//returns true if user accounnt was created or false if username is taken
 function createUser($name, $password, $email)
 {
 	$conn = createConnection();
-	if ($conn->connect_error) 
+	if ($conn->connect_error)
 	{
 		$error = $conn->error;
 		endConnection($conn);
 		return $error;
 	}
-	
+
 	$sql = "SELECT * FROM user
 	WHERE name = '$name'";
 	$result = $conn->query($sql);
-	
+
 	//username taken
 	if ($result->num_rows > 0)
 	{
 		endConnection($conn);
 		return FALSE;
 	}
-	else 
+	else
 	{
 		$result->close();
 		$sql = "INSERT INTO user (name, password, email)
@@ -343,7 +446,7 @@ function createUser($name, $password, $email)
 			return TRUE;
 		}
 	}
-	
+
 	$error = $conn->error;
 	endConnection($conn);
 	return $error;
@@ -353,24 +456,24 @@ function createUser($name, $password, $email)
 function createUniversity($name, $location, $description, $students)
 {
 	$conn = createConnection();
-	if ($conn->connect_error) 
+	if ($conn->connect_error)
 	{
 		$error = $conn->error;
 		endConnection($conn);
 		return $error;
 	}
-	
+
 	$sql = "SELECT * FROM University
 	WHERE name = '$name'";
 	$result = $conn->query($sql);
-	
+
 	//username taken
 	if ($result->num_rows > 0)
 	{
 		endConnection($conn);
 		return false;
 	}
-	else 
+	else
 	{
 		 $result->close();
 		$sql = "INSERT INTO University (name, location, description, students)
@@ -382,8 +485,8 @@ function createUniversity($name, $location, $description, $students)
 			return true;
 		}
 	}
-	
-	
+
+
 	$error = $conn->error;
 	endConnection($conn);
 	return $error;
@@ -393,57 +496,57 @@ function createUniversity($name, $location, $description, $students)
 function getUniversity($name)
 {
 	$conn = createConnection();
-	if ($conn->connect_error) 
+	if ($conn->connect_error)
 	{
 		$error = $conn->error;
 		endConnection($conn);
 		return $error;
 	}
-	
+
 	$sql = "SELECT *
 	FROM University WHERE name='$name'";
 	$result = $conn->query($sql);
-	
+
 	if ($result->num_rows > 0)
 	{
 		return "university found";
 	}
-	else 
+	else
 	{
 		endConnection($conn);
 		return false;
 	}
-	
-	
+
+
 	$error = $conn->error;
 	endConnection($conn);
 	return $error;
-	
+
 }
-	
+
 
 
 function createLocation($loc_name, $latitude, $longitude)
 {
 	$conn = createConnection();
-	if ($conn->connect_error) 
+	if ($conn->connect_error)
 	{
 		$error = $conn->error;
 		endConnection($conn);
 		return $error;
 	}
-	
+
 	$sql = "SELECT * FROM Location
 	WHERE loc_name = '$loc_name'";
 	$result = $conn->query($sql);
-	
+
 	//username taken
 	if ($result->num_rows > 0)
 	{
 		endConnection($conn);
 		return false;
 	}
-	else 
+	else
 	{
 		 $result->close();
 		$sql = "INSERT INTO Location (loc_name, latitude, longitude)
@@ -455,8 +558,8 @@ function createLocation($loc_name, $latitude, $longitude)
 			return true;
 		}
 	}
-	
-	
+
+
 	$error = $conn->error;
 		endConnection($conn);
 		return $error;
@@ -465,28 +568,28 @@ function createLocation($loc_name, $latitude, $longitude)
 function getLocation($loc_name)
 {
 	$conn = createConnection();
-	if ($conn->connect_error) 
+	if ($conn->connect_error)
 	{
 		$error = $conn->error;
 		endConnection($conn);
 		return $error;
 	}
-	
+
 	$sql = "SELECT *
 	FROM Location WHERE loc_name='$loc_name'";
 	$result = $conn->query($sql);
-	
+
 	if ($result->num_rows > 0)
 	{
 		return "location found";
 	}
-	else 
+	else
 	{
 		endConnection($conn);
 		return false;
 	}
-	
-	
+
+
 	endConnection($conn);
 	return $result->error;
 }
@@ -494,26 +597,26 @@ function getLocation($loc_name)
 function getRSO($name)
 {
 	$conn = createConnection();
-	if ($conn->connect_error) 
+	if ($conn->connect_error)
 	{
 		return $conn->error;
 	}
-	
+
 	$sql = "SELECT *
 	FROM RSO WHERE name='$name'";
 	$result = $conn->query($sql);
-	
+
 	if ($result->num_rows > 0)
 	{
 		return "RSO found";
 	}
-	else 
+	else
 	{
 		endConnection($conn);
 		return false;
 	}
-	
-	
+
+
 	endConnection($conn);
 	return "tacos";
 }
@@ -521,22 +624,22 @@ function getRSO($name)
 function createRSO($r_name, $s_count, $university, $rso_desc)
 {
 	$conn = createConnection();
-	if ($conn->connect_error) 
+	if ($conn->connect_error)
 	{
 		return $conn->error;
 	}
-	
+
 	$sql = "SELECT * FROM RSO
 	WHERE r_name = '$r_name'";
 	$result = $conn->query($sql);
-	
+
 	//username taken
 	if ($result->num_rows > 0)
 	{
 		endConnection($conn);
 		return false;
 	}
-	else 
+	else
 	{
 		 $result->close();
 		$sql = "INSERT INTO Location (r_name, s_count, university, rso_desc)
@@ -548,8 +651,8 @@ function createRSO($r_name, $s_count, $university, $rso_desc)
 			return true;
 		}
 	}
-	
-	
+
+
 	endConnection($conn);
 	return $result->error;
 }
@@ -557,24 +660,24 @@ function createRSO($r_name, $s_count, $university, $rso_desc)
 function createAdmin($name, $password, $email)
 {
 	$conn = createConnection();
-	if ($conn->connect_error) 
+	if ($conn->connect_error)
 	{
 		$error = $conn->error;
 		endConnection($conn);
 		return $error;
 	}
-	
+
 	$sql = "SELECT * FROM admin
 	WHERE name = '$name'";
 	$result = $conn->query($sql);
-	
+
 	//username taken
 	if ($result->num_rows > 0)
 	{
 		endConnection($conn);
 		return FALSE;
 	}
-	else 
+	else
 	{
 		$result->close();
 		$sql = "INSERT INTO admin (name, password, email)
@@ -586,8 +689,14 @@ function createAdmin($name, $password, $email)
 			return TRUE;
 		}
 	}
-	
+
 	$error = $conn->error;
 	endConnection($conn);
 	return $error;
+}
+
+function stringToUser($string)
+{
+	list($sid, $username, $password, $email) = explode('/', $string);
+	return new User($sid, $username, $password, $email);
 }
