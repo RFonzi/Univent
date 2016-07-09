@@ -95,6 +95,53 @@ function endConnection($conn)
 	return;
 }
 
+function joinRSO($rid, $name, $user)
+{
+	$conn = createConnection();
+	if ($conn->connect_error) 
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	
+	if(getUserLevel($user->sid) == 3 || getUserLevel($user->sid) == 0)
+	{
+		endConnection($conn);
+		return false;
+	}
+	
+	$sql = "SELECT *
+	FROM joinsrso WHERE sid = '$user->sid' AND rid = $rid";
+	$result = $conn->query($sql);
+	if ($result->num_rows > 0)
+	{
+		endConnection($conn);
+		return false;
+	}
+	
+	$result->close();
+	
+	$sql = "INSERT INTO joinsrso (rid, sid)
+			VALUES('$rid', '$user->sid')";
+	$result = $conn->query($sql);
+	if ($result == True)
+	{
+		$sql = "UPDATE rso set students = students + 1 WHERE rid = '$rid  ;";
+		$result = $conn->query($sql);
+		if ($result == True)
+		{
+			endConnection($conn);
+			return true;
+		}
+	}
+	
+	$error = $conn->error;
+	endConnection($conn);
+	return $error;
+	
+}
+
 function joinUniversity($name, $user)
 {
 	$conn = createConnection();
@@ -108,7 +155,7 @@ function joinUniversity($name, $user)
 	if(getUserLevel($user->sid) == 3 || getUserLevel($user->sid) == 2 || getUserLevel($user->sid) == 1)
 	{
 		endConnection($conn);
-		return "1";
+		return false;
 	}
 
 	$sql = "SELECT *
@@ -117,7 +164,7 @@ function joinUniversity($name, $user)
 	if ($result->num_rows == 0)
 	{
 		endConnection($conn);
-		return "2";
+		return false;
 	}
 	
 	$result->close();
@@ -128,7 +175,7 @@ function joinUniversity($name, $user)
 	if ($result->num_rows > 0)
 	{
 		endConnection($conn);
-		return "3";
+		return false;
 	}
 	
 	$result->close();
