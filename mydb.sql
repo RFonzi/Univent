@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 09, 2016 at 04:46 PM
+-- Generation Time: Jul 10, 2016 at 05:42 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -352,6 +352,7 @@ ALTER TABLE `student_creates_event`
 -- Constraints for table `univ_affil`
 --
 ALTER TABLE `univ_affil`
+  ADD CONSTRAINT `univ_affil_ibfk_2` FOREIGN KEY (`name`) REFERENCES `university` (`name`),
   ADD CONSTRAINT `univ_affil_ibfk_1` FOREIGN KEY (`sid`) REFERENCES `student` (`sid`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
