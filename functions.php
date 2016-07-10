@@ -105,14 +105,49 @@ function joinRSO($rid, $name, $user)
 		return $error;
 	}
 	
+	//user is a student/admin
 	if(getUserLevel($user->sid) == 3 || getUserLevel($user->sid) == 0)
 	{
 		endConnection($conn);
 		return false;
 	}
 	
+	/*
+	$sql = "SELECT *
+	FROM univ_affil WHERE sid = '$user->sid'";
+	$result = $conn->query($sql);
+	$row = $result->fetch_assoc();
+	$c_name = $row["name"];
+	$result->close();
+	
+	
+	$sql = "SELECT *
+	FROM university WHERE name = 'UCF'";
+	$result = $conn->query($sql);
+	$row = $result->fetch_assoc();
+	
+	//user is joining a rso from their uni
+	if ($name != $row['name'])
+	{
+		endConnection($conn);
+		return false;
+	}
+	
+	$result->close();
+	*/
 	$sql = "SELECT *
 	FROM joinsrso WHERE sid = '$user->sid' AND rid = $rid";
+	$result = $conn->query($sql);
+	if ($result->num_rows > 0)
+	{
+		endConnection($conn);
+		return false;
+	}
+	
+	$result->close();
+	
+	$sql = "SELECT *
+	FROM ownsrso WHERE sid = '$user->sid' AND rid = $rid";
 	$result = $conn->query($sql);
 	if ($result->num_rows > 0)
 	{
@@ -127,7 +162,7 @@ function joinRSO($rid, $name, $user)
 	$result = $conn->query($sql);
 	if ($result == True)
 	{
-		$sql = "UPDATE rso set students = students + 1 WHERE rid = '$rid  ;";
+		$sql = "UPDATE rso set students = students + 1 WHERE rid = '$rid';";
 		$result = $conn->query($sql);
 		if ($result == True)
 		{
@@ -262,8 +297,14 @@ function createRSO($rname, $uni_name, $rso_desc, $user)
 			
 				if ($result == TRUE)
 				{
-					endConnection($conn);
-					return true;
+					$sql = "INSERT INTO createsrso (rid, sid)
+					VALUES('$last_id', '$temp')";
+					$result = $conn->query($sql);
+					if ($result == TRUE)
+					{
+						endConnection($conn);
+						return true;
+					}
 				}
 					
 			}
