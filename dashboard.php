@@ -6,10 +6,10 @@
 </head>
 <body>
 <?php include 'functions.php';
-	createUser("test", "test", "testemail");
 
 	//get current user logged in
 	$user = stringToUser($_POST["user"]);
+	
 ?>
 	<div id="pageWrapper">
 		<div id="header">
@@ -46,9 +46,6 @@
 	echo "</form>\n";
 	?>
 
-
-	<h1>This is where the table goes</h1>
-
 	<?php
 
 
@@ -65,8 +62,6 @@
 				echo "test3";
 				//$arrayOfData = getRSOevents($user);
 
-			//createTable($arrayOfData);
-
 			if($_POST['list']=="joinRSO")
 				echo "test4";
 				//$didJoin = joinRSO($user);
@@ -76,20 +71,25 @@
 				//new page for create rso redirect here
 			if($_POST['list']=="createEvent")
 				echo "<form action='createEvents.php' method='post' name='redirectCreateEvent'>";
+					echo "<input type='hidden' name='user' value='" . $user . "'>";
+				echo "</form>";
 				//new page for create event redirect here
 
 
 			if($_POST['list']=="createUniv")
-				//$userlvl = getUserLevel($user->sid);
-				//if($userlvl==3)
-					//new page for create univ redirect here
-				//else echo "Credentials not acquired."
-
-
-
+			
 
 	?>
 
 	</div>
 </body>
+<script type="text/javascript">
+
+if(typeof redirectCreateEvent != "undefined"){
+  document.redirectCreateEvent.submit();
+}
+else{
+  takemeback();
+}
+</script>
 </html>
