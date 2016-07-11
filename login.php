@@ -45,9 +45,9 @@
     <form name="login" action="loginsuccess.php" method="post">
       <input type="hidden" name="login" value=""/>
       <li><label>Username</label>
-      <input name="username" type="username" pattern="[a-zA-Z0-9!@#$%^*_|]{1,30}" placeholder="username">
+      <input name="username" type="username" pattern="[a-zA-Z0-9!@#$%^*_|.]{1,30}" placeholder="username">
       <li><label>Password</label>
-      <input name="password" type="password" pattern="[a-zA-Z0-9!@#$%^*_|]{1,20}" placeholder="password">
+      <input name="password" type="password" pattern="[a-zA-Z0-9!@#$%^*_|.]{1,20}" placeholder="password">
       <li>
       <input type="submit" value="Log in">
     </form>
@@ -58,11 +58,11 @@
     <form name="signup" action="login.php" method="post">
       <input type="hidden" name="signup" value=""/>
       <li><label>Username</label>
-      <input name="username" type="username" pattern="[a-zA-Z0-9!@#$%^*_|]" placeholder="username">
+      <input name="username" type="username" pattern="[a-zA-Z0-9!@#$%^*_|.]{1,30}" placeholder="username">
       <li><label>Email</label>
-      <input name="email" type="email" pattern="[a-zA-Z0-9!@#$%^*_|]" placeholder="email@website.com">
+      <input name="email" type="email" pattern="[a-zA-Z0-9!@#$%^*_|.]{1,50}" placeholder="email@website.com">
       <li><label>Password</label>
-      <input name="password" type="password" pattern="[a-zA-Z0-9!@#$%^*_|]" placeholder="password">
+      <input name="password" type="password" pattern="[a-zA-Z0-9!@#$%^*_|.]{1,20}" placeholder="password">
       <li>
         <input name="accttype" type="radio" name="userprivilege" value="user" checked> User
         <input name="accttype" type="radio" name="userprivilege" value="superadmin"> Super Admin
