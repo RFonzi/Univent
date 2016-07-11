@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 10, 2016 at 05:42 PM
+-- Generation Time: Jul 11, 2016 at 06:30 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `sid` int(11) NOT NULL,
   `name` char(30) DEFAULT NULL,
   `password` char(20) DEFAULT NULL,
-  `email` char(30) DEFAULT NULL,
+  `email` char(50) DEFAULT NULL,
   PRIMARY KEY (`sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `event` (
   `category` char(20) DEFAULT NULL,
   `description` char(100) DEFAULT NULL,
   `contact_phone` char(12) DEFAULT NULL,
-  `contact_email` char(30) DEFAULT NULL,
+  `contact_email` char(50) DEFAULT NULL,
   `type` char(15) DEFAULT NULL,
   `rating` char(10) DEFAULT NULL,
   `super_approval` int(1) DEFAULT NULL,
@@ -205,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `student` (
   `sid` int(11) NOT NULL AUTO_INCREMENT,
   `name` char(30) DEFAULT NULL,
   `password` char(20) DEFAULT NULL,
-  `email` varchar(30) NOT NULL,
+  `email` varchar(50) NOT NULL,
   PRIMARY KEY (`sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -234,7 +234,7 @@ CREATE TABLE IF NOT EXISTS `super_admin` (
   `sid` int(11) NOT NULL,
   `name` char(30) DEFAULT NULL,
   `password` char(20) DEFAULT NULL,
-  `email` char(30) DEFAULT NULL,
+  `email` char(50) DEFAULT NULL,
   PRIMARY KEY (`sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -261,8 +261,8 @@ CREATE TABLE IF NOT EXISTS `university` (
 
 CREATE TABLE IF NOT EXISTS `univ_affil` (
   `name` char(30) NOT NULL DEFAULT '',
-  `sid` int(11) DEFAULT NULL,
-  PRIMARY KEY (`name`),
+  `sid` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`name`,`sid`),
   KEY `sid` (`sid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -276,7 +276,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `sid` int(11) NOT NULL AUTO_INCREMENT,
   `name` char(30) DEFAULT NULL,
   `password` char(20) DEFAULT NULL,
-  `email` char(20) DEFAULT NULL,
+  `email` char(50) DEFAULT NULL,
   PRIMARY KEY (`sid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
@@ -352,8 +352,8 @@ ALTER TABLE `student_creates_event`
 -- Constraints for table `univ_affil`
 --
 ALTER TABLE `univ_affil`
-  ADD CONSTRAINT `univ_affil_ibfk_2` FOREIGN KEY (`name`) REFERENCES `university` (`name`),
-  ADD CONSTRAINT `univ_affil_ibfk_1` FOREIGN KEY (`sid`) REFERENCES `student` (`sid`);
+  ADD CONSTRAINT `univ_affil_ibfk_1` FOREIGN KEY (`name`) REFERENCES `university` (`name`),
+  ADD CONSTRAINT `univ_affil_ibfk_2` FOREIGN KEY (`sid`) REFERENCES `student` (`sid`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
