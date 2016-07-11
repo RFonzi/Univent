@@ -2,9 +2,7 @@
 <?php include 'functions.php';
   if(isset($_POST["createEvent"])){
 
-    //$username = $_POST["username"];
-    //$email = $_POST["email"];
-    //$password = $_POST["password"];
+    
 	
 	$time = $_POST["time"];
 	$date = $_POST["date"];
@@ -21,7 +19,8 @@
 	$super_approval = 1;
 	$admin_approval = 1;
 	
-    //$results = createEvent($username, $password, $email);
+    $result = createEvent($time, $date, $e_name, $category, $e_desc, 
+				$contact_phone, $contact_email, $type, $loc_name, $latitude, $longitude);
 	echo "<form action='dashboard.php' method='post' name='redirectEventToDash'>";
 	
 	echo "</form>";
@@ -29,11 +28,20 @@
 ?>
 <!DOCTYPE html>
 <html>
+<script type="text/javascript">
+function takemeback() {
+  document.location = "createEvents.php?createEvent=failed";
+}
 
+if(typeof redirectEventToDash != "undefined"){
+  document.redirectEventToDash.submit();
+}
+else{
+  takemeback();
+}
+</script>
 <head>
 </head>
 <body>
-	<h1>Create Events</h1>
-	
 </body>
 </html>
