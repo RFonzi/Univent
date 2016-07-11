@@ -101,7 +101,7 @@ function endConnection($conn)
 }
 
 //test this again when univ affil is fixed
-function joinRSO($rid, $name, $user)
+function joinRSO($rid, $name, $university, $user)
 {
 	$conn = createConnection();
 	if ($conn->connect_error)
@@ -118,7 +118,7 @@ function joinRSO($rid, $name, $user)
 		return false;
 	}
 
-	/*
+	
 	//getting uni name
 	$sql = "SELECT *
 	FROM univ_affil WHERE sid = '$user->sid'";
@@ -134,14 +134,14 @@ function joinRSO($rid, $name, $user)
 	$row = $result->fetch_assoc();
 
 	//user is joining a rso from their uni
-	if ($name != $row['name'])
+	if ($university != $row['name'])
 	{
 		endConnection($conn);
 		return false;
 	}
 
 	$result->close();
-	*/
+	
 	//user is not a part of this rso already
 	$sql = "SELECT *
 	FROM joinsrso WHERE sid = '$user->sid' AND rid = $rid";
@@ -436,7 +436,7 @@ function createEvent($time, $date, $e_name, $category, $e_desc, $contact_phone, 
 		return false;
 	}
 
-	if($category != ("public") || $category != "private")
+	if($category == "RSO")
 	{
 		endConnection($conn);
 		return false;
