@@ -418,6 +418,96 @@ function getAllEvents($user)
 	return $error;
 }
 
+function createRSOEvent($time, $date, $e_name, $category, $e_desc, $contact_phone, $contact_email, $type, $loc_name, $latitude, $longitude, $user, $rid)
+{
+	$conn = createConnection();
+
+	if ($conn->connect_error)
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+
+	//user must be admin
+	if(getUserLevel($user->sid)!= 2)
+	{
+		endConnection($conn);
+		return false;
+	}
+
+	//must be rso event
+	if($category != "RSO")
+	{
+		endConnection($conn);
+		return false;
+	}
+	
+	//user must own this rso
+	$sql = "SELECT * FROM ownsrso
+	WHERE rid = '$rid' AND sid = '$user->sid'";
+	$result = $conn->query($sql);
+	
+	if ($result->num_rows == 0)
+	{
+		endConnection($conn);
+		return false;
+	}
+
+	//Event Conflict
+	$sql = "SELECT * FROM have_location
+	WHERE name = '$loc_name' AND time = $time";
+	$result = $conn->query($sql);
+
+	if ($result->num_rows == 0)
+	{
+		$result->close();
+		$sql = "INSERT INTO event (time, date, name, category, description, contact_phone, contact_email, type, super_approval, admin_approval, up, down)
+		VALUES('$time', '$date', '$e_name', '$category', '$e_desc', '$contact_phone', '$contact_email', '$type', 1, 1, 0, 0)";
+		$result = $conn->query($sql);
+
+		if ($result == TRUE)
+		{
+			//$result->close();
+			$sql = "INSERT INTO location (name, latitude, longitude)
+			VALUES('$loc_name', '$latitude', '$longitude')";
+			$result = $conn->query($sql);
+
+			if ($result == TRUE)
+			{
+				//$result->close();
+				$sql = "INSERT INTO have_location (time, name)
+				VALUES('$time', '$loc_name')";
+				$result = $conn->query($sql);
+				if ($result == TRUE)
+				{
+					$sql = "INSERT INTO admin_creates_event (name, time, sid, rid)
+					VALUES('$loc_name', '$time', '$user->sid', '$rid')";
+					$result = $conn->query($sql);
+					if ($result == TRUE)
+					{
+						endConnection($conn);
+						return true;
+					}
+
+				}
+			}
+		}
+
+	}
+	else
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return false;
+	}
+
+
+	$error = $conn->error;
+	endConnection($conn);
+	return $error;
+}
+
 function createEvent($time, $date, $e_name, $category, $e_desc, $contact_phone, $contact_email, $type, $loc_name, $latitude, $longitude, $user)
 {
 	$conn = createConnection();
