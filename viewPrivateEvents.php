@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 	<h1>Private Events</h1>
@@ -9,9 +10,9 @@
 		
 		createUser("test","test","email@.com");
 		$user = getUser("test","test");
-		createEvent(001233, 00002233,"justin","private","desc","phone","email","xmas","loc3 name unique",22.0,23.0,$user);
-		createEvent(001232, 00002233,"justin","private","desc","phone","email","xmas","loc4 name unique",22.0,23.0,$user);
-		createEvent(001231, 00002233,"justin","private","desc","phone","email","xmas","loc5 name unique",22.0,23.0,$user);
+		createEvent(002333, 00002233,"justin","private","desc","phone","email","xmas","loc3 name unique",22.0,23.0,$user);
+		createEvent(002332, 00002233,"justin","private","desc","phone","email","xmas","loc4 name unique",22.0,23.0,$user);
+		createEvent(002331, 00002233,"justin","private","desc","phone","email","xmas","loc5 name unique",22.0,23.0,$user);
 		
 		$arrayOfData = getPrivateEvents($user);
 		

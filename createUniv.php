@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-	<h1>Create RSO</h1>
+	<h1>Create University</h1>
 	
 	<form name="createUniv" action="createUnivSuccess.php" method="post">
 	

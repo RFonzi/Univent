@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 	<h1>Private Events</h1>
@@ -9,6 +10,7 @@
 		
 		createUser("test","test","email@.com");
 		$user = getUser("test","test");
+		createRSO("rso","univ","desc",$user);
 		createEvent(001333, 00002233,"justin","RSO","desc","phone","email","xmas","loc7 name unique",22.0,23.0,$user);
 		createEvent(001332, 00002233,"justin","RSO","desc","phone","email","xmas","loc8 name unique",22.0,23.0,$user);
 		createEvent(001331, 00002233,"justin","RSO","desc","phone","email","xmas","loc9 name unique",22.0,23.0,$user);
