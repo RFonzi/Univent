@@ -19,6 +19,8 @@
 
 
 	<form name="menuOp" method="post" onsubmit="location.reload()">
+		<?php echo nl2br("<input type='hidden' name='user' value='" . $user . "'>\n");
+		?>
 	<select name="list">
 		<option value='none' selected>Choose your destiny.</option>
 		<option value="viewAll">View All Events</option>
