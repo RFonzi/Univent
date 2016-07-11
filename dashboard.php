@@ -10,7 +10,7 @@
 
 	//get current user logged in
 	$user = stringToUser($_POST["user"]);
-	
+
 ?>
 	<div id="pageWrapper">
 		<div id="header">
@@ -25,21 +25,21 @@
 		echo "<input type='hidden' name='user' value='" . $user . "'>\n";
 		echo "<select name='list'>\n";
 		echo "<option value='none' selected>Choose your destiny.</option>\n";
-		if($userpriv >= 0 && $userpriv != 4){
+		if($userpriv >= 0 && $userpriv != 3){
 			echo "<option value='viewAll'>View All Events</option>\n";
 			echo "<option value='viewPublic'>View Public Events</option>\n";
 			if($userpriv == 0){
 				echo "<option value='joinUni'>Start attending a university</option>\n";
 			}
 		}
-		if($userpriv > 1 && $userpriv != 4){
+		if($userpriv > 1 && $userpriv != 3){
 			echo "<option value='viewPrivate'>View Private Events</option>\n";
 			echo "<option value='viewRSO'>View RSO Events</option>\n";
 			echo "<option value='joinRSO'>Join RSO</option>\n";
 			echo "<option value='createRSO'>Create RSO</option>\n";
 			echo "<option value='createEvent'>Create Event</option>\n";
 		}
-		if($userpriv == 4){
+		if($userpriv == 3){
 			echo "<option value='createUniv'>Create University</option>\n";
 		}
 	echo "</select>\n";
@@ -53,32 +53,45 @@
 			if($_POST['list']=="viewAll"){
 				echo "test";
 			}	//$arrayOfData = getAllEvents($user->sid);
-			if($_POST['list']=="viewPublic")
+			if($_POST['list']=="viewPublic"){
 				echo "test1";
 				//$arrayOfData = getPublicEvents($user);
-			if($_POST['list']=="viewPrivate")
+			}
+
+			if($_POST['list']=="viewPrivate"){
 				echo "test2";
 				//$arrayOfData = getPrivateEvents($user);
-			if($_POST['list']=="viewRSO")
+			}
+
+			if($_POST['list']=="viewRSO"){
 				echo "test3";
 				//$arrayOfData = getRSOevents($user);
+			}
 
-			if($_POST['list']=="joinRSO")
+
+			if($_POST['list']=="joinRSO"){
 				echo "test4";
 				//$didJoin = joinRSO($user);
 				//do confirmation here
-			if($_POST['list']=="createRSO")
+			}
+
+			if($_POST['list']=="createRSO"){
 				echo "test5";
+			}
+
 				//new page for create rso redirect here
-			if($_POST['list']=="createEvent")
+			if($_POST['list']=="createEvent"){
 				echo "<form action='createEvents.php' method='post' name='redirectCreateEvent'>";
-					echo "<input type='hidden' name='user' value='" . $user . "'>";
+				echo "<input type='hidden' name='user' value='" . $user . "'>";
 				echo "</form>";
 				//new page for create event redirect here
+			}
+			if($_POST['list']=="createUniv"){
+				echo "<form action='createUniv.php' method='post' name='redirectCreateEvent'>";
+				echo "<input type='hidden' name='user' value='" . $user . "'>";
+				echo "</form>";
+			}
 
-
-			if($_POST['list']=="createUniv")
-			
 
 	?>
 
