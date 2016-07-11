@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 11, 2016 at 06:30 PM
+-- Generation Time: Jul 11, 2016 at 07:25 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS `admin_creates_event` (
   `name` char(30) NOT NULL DEFAULT '',
   `time` time NOT NULL DEFAULT '00:00:00',
   `sid` int(11) NOT NULL DEFAULT '0',
+  `rid` int(11) NOT NULL,
   PRIMARY KEY (`sid`,`time`,`name`),
   KEY `time` (`time`),
   KEY `name` (`name`)
