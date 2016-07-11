@@ -112,7 +112,32 @@ function endConnection($conn)
 	return;
 }
 
-//test this again when univ affil is fixed
+function createComment($sid, $time, $name)
+{
+	$conn = createConnection();
+	if ($conn->connect_error)
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	
+	$sql = "INSERT INTO comments (sid, time, name, timestamps)
+	VALUES ('$sid', '$time', '$name', now())";
+	$result = $conn->query($sql);
+	
+	if($result == true)
+	{
+		return true;
+	}
+
+	
+	$error = $conn->error;
+	endConnection($conn);
+	return $error;
+}
+
+
 function joinRSO($rid, $name, $university, $user)
 {
 	$conn = createConnection();
@@ -387,6 +412,7 @@ function getUserLevel($sid)
 		return 0;
 	}
 
+	endConnection($conn);
 	return -1;
 }
 
@@ -473,6 +499,7 @@ function getPublicEvents()
 		$result2->close();
 		
 	}
+	endConnection($conn);
 	return $final;
 	//public function __construct($time, $date, $e_name, $category, $e_desc, $contact_phone, $contact_email, $type, $up_votes, $d_votes, 
 	//$super_approval, $admin_approval, $loc_name, $latitude, $longitude)
@@ -616,6 +643,8 @@ function getRSOEvents($user)
 		$result2->close();
 		
 	}
+	
+	endConnection($conn);
 	return $final;
 	//public function __construct($time, $date, $e_name, $category, $e_desc, $contact_phone, $contact_email, $type, $up_votes, $d_votes, 
 	//$super_approval, $admin_approval, $loc_name, $latitude, $longitude)
@@ -749,6 +778,8 @@ function getPrivateEvents($user)
 		$result2->close();
 		
 	}
+	
+	endConnection($conn);
 	return $final;
 	//public function __construct($time, $date, $e_name, $category, $e_desc, $contact_phone, $contact_email, $type, $up_votes, $d_votes, 
 	//$super_approval, $admin_approval, $loc_name, $latitude, $longitude)
