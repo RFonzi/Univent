@@ -18,22 +18,33 @@
 		</div>
 
 
-	<form name="menuOp" method="post" onsubmit="location.reload()">
-		<?php echo nl2br("<input type='hidden' name='user' value='" . $user . "'>\n");
-		?>
-	<select name="list">
-		<option value='none' selected>Choose your destiny.</option>
-		<option value="viewAll">View All Events</option>
-		<option value="viewPublic">View Public Events</option>
-		<option value="viewPrivate">View Private Events</option>
-		<option value="viewRSO">View RSO Events</option>
-		<option value="joinRSO">Join RSO</option>
-		<option value="createRSO">Create RSO</option>
-		<option value="createEvent">Create Event</option>
-		<option value="createUniv">Create University</option>
-	</select>
-	<input type='submit' name='submit'\>
-	</form>
+	<?php
+		$userpriv = getUserLevel($user->sid);
+		echo "<form name='menuOp' method='post' onsubmit='location.reload()'>\n";
+		echo "<input type='hidden' name='user' value='" . $user . "'>\n";
+		echo "<select name='list'>\n";
+		echo "<option value='none' selected>Choose your destiny.</option>\n";
+		if($userpriv >= 0 && $userpriv != 4){
+			echo "<option value='viewAll'>View All Events</option>\n";
+			echo "<option value='viewPublic'>View Public Events</option>\n";
+			if($userpriv == 0){
+				echo "<option value='joinUni'>Start attending a university</option>\n";
+			}
+		}
+		if($userpriv > 1 && $userpriv != 4){
+			echo "<option value='viewPrivate'>View Private Events</option>\n";
+			echo "<option value='viewRSO'>View RSO Events</option>\n";
+			echo "<option value='joinRSO'>Join RSO</option>\n";
+			echo "<option value='createRSO'>Create RSO</option>\n";
+			echo "<option value='createEvent'>Create Event</option>\n";
+		}
+		if($userpriv == 4){
+			echo "<option value='createUniv'>Create University</option>\n";
+		}
+	echo "</select>\n";
+	echo "<input type='submit' name='submit'\>\n";
+	echo "</form>\n";
+	?>
 
 
 	<h1>This is where the table goes</h1>
