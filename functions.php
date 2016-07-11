@@ -1,5 +1,17 @@
 <?php
 
+class EventHelper
+{
+	public $name;
+	public $time;
+	
+	public function __construct($name, $time)
+	{
+              $this->name = $name;
+			  $this->time = $time;
+    }
+}
+
 class User
 {
 	public $sid;
@@ -32,7 +44,7 @@ class University
 	public function __construct($name, $location, $description, $students)
 	{
               $this->name = $name;
-			  $this->location = $locaton;
+			  $this->location = $location;
 			  $this->description = $description;
 			  $this->students = $students;
     }
@@ -378,8 +390,8 @@ function getUserLevel($sid)
 	return -1;
 }
 
-//incomplete
-function getAllEvents($user)
+
+function getPublicEvents()
 {
 	$conn = createConnection();
 	if ($conn->connect_error)
@@ -389,30 +401,103 @@ function getAllEvents($user)
 		return $error;
 	}
 
-	$level = getUserLevel($user->sid);
-	$events = array();
-	$rid = array();
+	//$level = getUserLevel($user->sid);
+	$locatons = array();
+	$times = array();
+	$final = array();
 
-	$sql = "SELECT rid
-	FROM joinsrso WHERE sid ='$user->sid'";
+	$sql = "SELECT *
+	FROM event WHERE category = 'public'";
 	$result = $conn->query($sql);
+	//$row = $result->fetch_assoc();
+	
+	if ($result->num_rows == 0)
+	{
+		endConnection($conn);
+		return false;
+	}
+
+	
+	
 
 	while($row = $result->fetch_assoc())
 	{
-
+		$times[] = $row["time"];
+		
 	}
-
-
-
-	if ($result->num_rows > 0)
+	//return $times;
+	
+	$result->close();
+	
+	$sql = "SELECT *
+		FROM have_location";
+		$result = $conn->query($sql);
+	
+	//get all place names
+	while($row = $result->fetch_assoc())
+	{
+		for($i = 0; $i < count($times); $i++)
+		{
+			if($row["time"] == $times[$i])
+			{
+				$locations[] = new EventHelper($row["name"], $times[$i]);
+			}
+			
+		}
+		
+	}
+	//return $locations;
+	$result->close();
+	
+	
+	/*
+	$sql = "SELECT *
+		FROM event";
+		$result = $conn->query($sql);
+		
+	$sql = "SELECT *
+		FROM location";
+		$result2 = $conn->query($sql);
+	
+	for($i = 0; $i < count($locations); $i++)
 	{
 		$row = $result->fetch_assoc();
-		$user = new User($row["sid"], $row["name"], $row["password"], $row["email"]);
-		endConnection($conn);
-		return $user;
+		$row2 = $result2->fetch_assoc();
+		if($row[])
+		
 	}
-
-
+	*/
+	
+	for($i = 0; $i < count($locations); $i++)
+	{
+		//events
+		$timehelper = $locations[$i]->time;
+		$sql = "SELECT *
+		FROM event WHERE time ='$timehelper'";
+		$result = $conn->query($sql);
+		
+		//locations
+		$namehelper = $locations[$i]->name;
+		$sql = "SELECT *
+		FROM location WHERE name = '$namehelper'";
+		$result2 = $conn->query($sql);
+		
+		$row = $result->fetch_assoc();
+		$row2 = $result2->fetch_assoc();
+		
+		$final[] = new Event_Location ($row["time"], $row["date"], $row["name"], $row["category"], $row["description"], $row["contact_phone"], 
+		$row["contact_email"], $row["type"], $row["up"], $row["down"], $row["super_approval"], $row["admin_approval"], $row2["name"], 
+		$row2["latitude"], $row2["longitude"]);
+		
+		$result->close();
+		$result2->close();
+		
+	}
+	return $final;
+	//public function __construct($time, $date, $e_name, $category, $e_desc, $contact_phone, $contact_email, $type, $up_votes, $d_votes, 
+	//$super_approval, $admin_approval, $loc_name, $latitude, $longitude)
+	//$user = new User($row["sid"], $row["name"], $row["password"], $row["email"]);
+	
 	$error = $conn->error;
 	endConnection($conn);
 	return $error;
