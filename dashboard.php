@@ -29,7 +29,7 @@
 			echo "<option value='viewAll'>View All Events</option>\n";
 			echo "<option value='viewPublic'>View Public Events</option>\n";
 			if($userpriv == 0){
-				echo "<option value='joinUni'>Start attending a university</option>\n";
+				echo "<option value='joinUniv'>Start attending a university</option>\n";
 			}
 		}
 		if($userpriv > 1 && $userpriv != 3){
@@ -51,32 +51,39 @@
 
 
 			if($_POST['list']=="viewAll"){
-				echo "test";
-			}	//$arrayOfData = getAllEvents($user->sid);
+				echo "<form action='viewAllEvents.php' method='post' name='redirectCreateEvent'>";
+				echo "<input type='hidden' name='user' value='" . $user . "'>";
+				echo "</form>";
+			}
 			if($_POST['list']=="viewPublic"){
-				echo "test1";
-				//$arrayOfData = getPublicEvents($user);
+				echo "<form action='viewPublicEvents.php' method='post' name='redirectCreateEvent'>";
+				echo "<input type='hidden' name='user' value='" . $user . "'>";
+				echo "</form>";
 			}
 
 			if($_POST['list']=="viewPrivate"){
-				echo "test2";
-				//$arrayOfData = getPrivateEvents($user);
+				echo "<form action='viewPrivateEvents.php' method='post' name='redirectCreateEvent'>";
+				echo "<input type='hidden' name='user' value='" . $user . "'>";
+				echo "</form>";
 			}
 
 			if($_POST['list']=="viewRSO"){
-				echo "test3";
-				//$arrayOfData = getRSOevents($user);
+				echo "<form action='viewRSOevents.php' method='post' name='redirectCreateEvent'>";
+				echo "<input type='hidden' name='user' value='" . $user . "'>";
+				echo "</form>";
 			}
 
 
 			if($_POST['list']=="joinRSO"){
-				echo "test4";
-				//$didJoin = joinRSO($user);
-				//do confirmation here
+				echo "<form action='joinrso.php' method='post' name='redirectCreateEvent'>";
+				echo "<input type='hidden' name='user' value='" . $user . "'>";
+				echo "</form>";
 			}
 
 			if($_POST['list']=="createRSO"){
-				echo "test5";
+				echo "<form action='createrso.php' method='post' name='redirectCreateEvent'>";
+				echo "<input type='hidden' name='user' value='" . $user . "'>";
+				echo "</form>";
 			}
 
 				//new page for create rso redirect here
@@ -88,6 +95,11 @@
 			}
 			if($_POST['list']=="createUniv"){
 				echo "<form action='createUniv.php' method='post' name='redirectCreateEvent'>";
+				echo "<input type='hidden' name='user' value='" . $user . "'>";
+				echo "</form>";
+			}
+			if($_POST['list']=="joinUniv"){
+				echo "<form action='joinUniv.php' method='post' name='redirectCreateEvent'>";
 				echo "<input type='hidden' name='user' value='" . $user . "'>";
 				echo "</form>";
 			}
