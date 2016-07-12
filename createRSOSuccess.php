@@ -1,33 +1,35 @@
 <?php include 'functions.php';
-  if(isset($_POST["createRSO"])){
-	$rname = $_POST["rsoName"];
-	$uni_name = $_POST["university"];
-	$rso_desc = $_POST["description"];
-	//$user = $_POST["user"];
-	
-	$result = createRSO($rname, $uni_name, $rso_desc, $user);
-	
-	echo "<form action='dashboard.php' method='post' name='redirectEventToDash'>";
-	
-	echo "</form>";
-	}
+  session_start();
 ?>
 <!DOCTYPE html>
 <html>
-<script type="text/javascript">
-function takemeback() {
-  document.location = "createrso.php?createRSO=failed";
-}
+<?php
+  echo "<script type='text/javascript'>\n";
+  
+  //get current user logged in
+	$user = unserialize($_SESSION["user"]);
+  
+  if(isset($_POST["createRSO"])){
+    $rname = $_POST["rsoName"];
+	$uni_name = $_POST["university"];
+	$rso_desc = $_POST["description"];
+	
+	$results = createRSO($rname, $uni_name, $rso_desc, $user);
 
-if(typeof redirectEventToDash != "undefined"){
-  document.redirectEventToDash.submit();
-}
-else{
-  takemeback();
-}
+    if(!$results){
+      echo "takemeback();\n";
+    }
+    else{
+      //Old Way with POST
+      /*echo "<form action='dashboard.php' method='post' name='redirectlogin'>";
+      echo "<input type='hidden' name='user' value='" . $results . "'>";
+      echo "</form>";*/
+
+      echo "document.location = 'dashboard.php';\n";
+    }
+  }
+ ?>
+
+
 </script>
-<head>
-</head>
-<body>
-</body>
 </html>

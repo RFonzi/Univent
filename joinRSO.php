@@ -1,3 +1,7 @@
+<?php include 'functions.php';
+  session_start();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +11,11 @@
 <body>
 	<h1>Join RSO</h1>
 	
-	<?php include 'functions.php';
+	<?php
+	
+		//get current user logged in
+		$user = unserialize($_SESSION["user"]);
+		
 		$arrayOfData = getRSO($user);
 		
 		$html_table = '<table border="1 cellspacing="0" cellpadding="2""><tr><th>RSO Id</th><th>RSO Name</th><th>Description</th></tr>';
@@ -26,7 +34,7 @@
 	
 	?>
 
-
+	//if a user clicks an rso, link to new page, add them to rso, link THAT page back to dash
 
 
 </body>

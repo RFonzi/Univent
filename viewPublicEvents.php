@@ -1,3 +1,7 @@
+<?php include 'functions.php';
+  session_start();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,13 +11,14 @@
 	<h1>Public Events</h1>
 	
 	<form>
-	<?php include 'functions.php';
+	<?php
 		
-		createUser("test","test","email@.com");
-		$user = getUser("test","test");
-		createEvent(001133, 00002233,"justin","public","desc","phone","email","xmas","loc name unique",22.0,23.0,$user);
+		//get current user logged in
+		$user = unserialize($_SESSION["user"]);
+		
+		/*createEvent(001133, 00002233,"justin","public","desc","phone","email","xmas","loc name unique",22.0,23.0,$user);
 		createEvent(001132, 00002233,"justin","public","desc","phone","email","xmas","loc1 name unique",22.0,23.0,$user);
-		createEvent(001131, 00002233,"justin","public","desc","phone","email","xmas","loc2 name unique",22.0,23.0,$user);
+		createEvent(001131, 00002233,"justin","public","desc","phone","email","xmas","loc2 name unique",22.0,23.0,$user);*/
 		
 		$arrayOfData = getPublicEvents();
 		

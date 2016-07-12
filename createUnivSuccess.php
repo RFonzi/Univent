@@ -1,33 +1,35 @@
 <?php include 'functions.php';
+  session_start();
+?>
+<!DOCTYPE html>
+<html>
+<?php
+  echo "<script type='text/javascript'>\n";
+  
+  //get current user logged in
+	$user = unserialize($_SESSION["user"]);
+  
   if(isset($_POST["createUniv"])){
 	$name = $_POST["univName"];
 	$location = $_POST["location"];
 	$description = $_POST["description"];
-	//$user = $_POST["user"];
 	
-	result = createUniversity($name, $location, $description, $user);
-	
-	echo "<form action='dashboard.php' method='post' name='redirectEventToDash'>";
-	
-	echo "</form>";
-	}
-?>
-<!DOCTYPE html>
-<html>
-<script type="text/javascript">
-function takemeback() {
-  document.location = "createUniv.php?createUniv=failed";
-}
+	$results = createUniversity($name, $location, $description, $user);
 
-if(typeof redirectEventToDash != "undefined"){
-  document.redirectEventToDash.submit();
-}
-else{
-  takemeback();
-}
+    if(!$results){
+      echo "takemeback();\n";
+    }
+    else{
+      //Old Way with POST
+      /*echo "<form action='dashboard.php' method='post' name='redirectlogin'>";
+      echo "<input type='hidden' name='user' value='" . $results . "'>";
+      echo "</form>";*/
+
+      echo "document.location = 'dashboard.php';\n";
+    }
+  }
+ ?>
+
+
 </script>
-<head>
-</head>
-<body>
-</body>
 </html>
