@@ -50,6 +50,24 @@ class University
     }
 }
 
+class Comment
+{
+	public $sid;
+	public $time;
+	public $name;
+	public $timestamps;
+	public $text;
+	
+	public function __construct($sid, $time, $name, $timestamps, $text)
+	{
+              $this->sid = $sid;
+			  $this->time = $time;
+			  $this->name = $name;
+			  $this->timestamps = $timestamps;
+			  $this->text = $text;
+    }
+}
+
 class Event_Location
 {
 		public $time;
@@ -166,6 +184,135 @@ function checkEmail($email, $university)
 	return $error;
 }
 
+function upVote($time, $name)
+{
+	$conn = createConnection();
+	if ($conn->connect_error)
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	
+	$sql = "SELECT * from have_location WHERE time = '$time' AND name = '$name'";
+	$result = $conn->query($sql);
+	
+	if($result == null)
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	
+	if ($result->num_rows == 0)
+	{
+		endConnection($conn);
+		return false;
+	}
+	
+	$sql = "UPDATE event set up = up + 1 WHERE time = '$time'";
+	$result = $conn->query($sql);
+	
+	if($result == true)
+	{
+		endConnection($conn);
+		return true;
+	}
+	
+	//$sql = "UPDATE rso set students = students + 1 WHERE rid = '$rid';";
+	
+	$error = $conn->error;
+	endConnection($conn);
+	return $error;
+}
+
+function downVote($time, $name)
+{
+	$conn = createConnection();
+	if ($conn->connect_error)
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	
+	$sql = "SELECT * from have_location WHERE time = '$time' AND name = '$name'";
+	$result = $conn->query($sql);
+	
+	if($result == null)
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	
+	if ($result->num_rows == 0)
+	{
+		endConnection($conn);
+		return false;
+	}
+	
+	$sql = "UPDATE event set down = down + 1 WHERE time = '$time'";
+	$result = $conn->query($sql);
+	
+	if($result == true)
+	{
+		endConnection($conn);
+		return true;
+	}
+	
+	//$sql = "UPDATE rso set students = students + 1 WHERE rid = '$rid';";
+	
+	$error = $conn->error;
+	endConnection($conn);
+	return $error;
+}
+
+function getComments($time, $name)
+{
+	$conn = createConnection();
+	if ($conn->connect_error)
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	$comments = array();
+	
+	$sql = "SELECT * from comments WHERE time = '$time' AND name = '$name'";
+	$result = $conn->query($sql);
+	
+	//SELECT *
+	//FROM joinsrso WHERE sid = '$user->sid' AND rid = $rid";
+	
+	if($result == null)
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	
+	if ($result->num_rows == 0)
+	{
+		endConnection($conn);
+		return false;
+	}
+	
+	while($row = $result->fetch_assoc())
+	{
+		$comments[] = new Comment($row["sid"], $row["time"], $row["name"], $row["timestamps"], $row["text"]);
+	}
+	//$locations[] = new EventHelper($row["name"], $times[$i]);
+	endConnection($conn);
+	return $comments;
+	
+	//public function __construct($sid, $time, $name, $timestamps, $text)
+	
+	$error = $conn->error;
+	endConnection($conn);
+	return $error;
+}
+
 function createComment($sid, $time, $name)
 {
 	$conn = createConnection();
@@ -182,6 +329,7 @@ function createComment($sid, $time, $name)
 	
 	if($result == true)
 	{
+		endConnection($conn);
 		return true;
 	}
 	$result->close();
