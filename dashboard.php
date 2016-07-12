@@ -15,6 +15,7 @@ session_start();
 <head>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="styles.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body>
 <?php
@@ -32,12 +33,10 @@ session_start();
 	<form>
 	<?php
 		$userpriv = getUserLevel($user->sid);
-		echo "<form name='menuOp' method='post' onsubmit='location.reload()'>\n";
-		echo "<input type='hidden' name='user' value='" . $user . "'>\n";
-		echo "<select name='list'>\n";
+		echo "<form action='#'>\n";
+		echo "<select name='list' id='list'>\n";
 		echo "<option value='none' selected>Choose your destiny.</option>\n";
 		if($userpriv >= 0 && $userpriv != 3){
-			echo "<option value='viewAll'>View All Events</option>\n";
 			echo "<option value='viewPublic'>View Public Events</option>\n";
 			if($userpriv == 0){
 				echo "<option value='joinUniv'>Start attending a university</option>\n";
@@ -54,78 +53,49 @@ session_start();
 			echo "<option value='createUniv'>Create University</option>\n";
 		}
 	echo "</select>\n";
-	echo "<input type='submit' name='submit'\>\n";
 	echo "</form>\n";
 	?>
-
+		<input type="button" value="Submit" onclick="switchPage($('#list option:selected').val());"/>
 	</form>
-	<?php
 
-
-			if($_POST['list']=="viewAll"){
-				echo "<form action='viewAllEvents.php' method='post' name='redirectCreateEvent'>";
-				echo "<input type='hidden' name='user' value='" . $user . "'>";
-				echo "</form>";
-			}
-			if($_POST['list']=="viewPublic"){
-				echo "<form action='viewPublicEvents.php' method='post' name='redirectCreateEvent'>";
-				echo "<input type='hidden' name='user' value='" . $user . "'>";
-				echo "</form>";
-			}
-
-			if($_POST['list']=="viewPrivate"){
-				echo "<form action='viewPrivateEvents.php' method='post' name='redirectCreateEvent'>";
-				echo "<input type='hidden' name='user' value='" . $user . "'>";
-				echo "</form>";
-			}
-
-			if($_POST['list']=="viewRSO"){
-				echo "<form action='viewRSOevents.php' method='post' name='redirectCreateEvent'>";
-				echo "<input type='hidden' name='user' value='" . $user . "'>";
-				echo "</form>";
-			}
-
-
-			if($_POST['list']=="joinRSO"){
-				echo "<form action='joinrso.php' method='post' name='redirectCreateEvent'>";
-				echo "<input type='hidden' name='user' value='" . $user . "'>";
-				echo "</form>";
-			}
-
-			if($_POST['list']=="createRSO"){
-				echo "<form action='createrso.php' method='post' name='redirectCreateEvent'>";
-				echo "<input type='hidden' name='user' value='" . $user . "'>";
-				echo "</form>";
-			}
-
-				//new page for create rso redirect here
-			if($_POST['list']=="createEvent"){
-				echo "<form action='createEvents.php' method='post' name='redirectCreateEvent'>";
-				echo "<input type='hidden' name='user' value='" . $user . "'>";
-				echo "</form>";
-				//new page for create event redirect here
-			}
-			if($_POST['list']=="createUniv"){
-				echo "<form action='createUniv.php' method='post' name='redirectCreateEvent'>";
-				echo "<input type='hidden' name='user' value='" . $user . "'>";
-				echo "</form>";
-			}
-			if($_POST['list']=="joinUniv"){
-				echo "<form action='joinUniv.php' method='post' name='redirectCreateEvent'>";
-				echo "<input type='hidden' name='user' value='" . $user . "'>";
-				echo "</form>";
-			}
-
-
-	?>
 </body>
 <script type="text/javascript">
 
-if(typeof redirectCreateEvent != "undefined"){
-  document.redirectCreateEvent.submit();
-}
-else{
-  takemeback();
-}
+	function switchPage(value){
+		console.log("entered function");
+
+		if(value == "viewPublic"){
+			console.log(value);
+			document.location = "viewPublicEvents.php";
+		}
+		else if(value == "viewPrivate"){
+			console.log(value);
+			document.location = "viewPrivateEvents.php";
+		}
+		else if(value == "viewRSO"){
+			console.log(value);
+			document.location = "viewRSOevents.php";
+		}
+		else if(value == "joinRSO"){
+			console.log(value);
+			document.location = "joinRSO.php";
+		}
+		else if(value == "createRSO"){
+			console.log(value);
+			document.location = "createrso.php";
+		}
+		else if(value == "createEvent"){
+			console.log(value);
+			document.location = "createEvents.php";
+		}
+		else if(value == "createUniv"){
+			console.log(value);
+			document.location = "createUniv.php";
+		}
+		else if(value == "joinUniv"){
+			console.log(value);
+			document.location = "joinUniv.php";
+		}
+	}
 </script>
 </html>
