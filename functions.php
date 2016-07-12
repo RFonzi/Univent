@@ -313,7 +313,7 @@ function getComments($time, $name)
 	return $error;
 }
 
-function createComment($sid, $time, $name)
+function createComment($sid, $time, $name, $text)
 {
 	$conn = createConnection();
 	if ($conn->connect_error)
@@ -323,8 +323,8 @@ function createComment($sid, $time, $name)
 		return $error;
 	}
 	
-	$sql = "INSERT INTO comments (sid, time, name, timestamps)
-	VALUES ('$sid', '$time', '$name', now())";
+	$sql = "INSERT INTO comments (sid, time, name, timestamps, text)
+	VALUES ('$sid', '$time', '$name', now(), '$text')";
 	$result = $conn->query($sql);
 	
 	if($result == true)
