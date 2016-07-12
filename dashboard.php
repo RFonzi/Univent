@@ -1,3 +1,7 @@
+<?php include "functions.php";
+session_start();
+ ?>
+
 <!DOCTYPE html>
 <html>
 <style>
@@ -13,10 +17,10 @@
 	<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<?php include 'functions.php';
+<?php
 
 	//get current user logged in
-	$user = stringToUser($_POST["user"]);
+	$user = unserialize($_SESSION["user"]);
 
 ?>
 	<div>

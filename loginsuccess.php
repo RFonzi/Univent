@@ -1,5 +1,11 @@
 <?php include 'functions.php';
+  session_start();
+?>
 
+<!DOCTYPE html>
+<html>
+<?php
+  echo "<script type='text/javascript'>\n";
   if(isset($_POST["login"])){
     $username = $_POST["username"];
     $password = $_POST["password"];
@@ -7,32 +13,20 @@
     $results = getUser($username, $password);
 
     if(!$results){
+      echo "takemeback();\n";
     }
     else{
-      echo "<form action='dashboard.php' method='post' name='redirectlogin'>";
-      /*foreach($_POST as $a => $b){
-        echo "<input type='hidden' name='" . htmlentities($a) . "' value='" . htmlentities($b) . "'>";
-
-      }*/
+      //Old Way with POST
+      /*echo "<form action='dashboard.php' method='post' name='redirectlogin'>";
       echo "<input type='hidden' name='user' value='" . $results . "'>";
-      echo "</form>";
+      echo "</form>";*/
+      $_SESSION["user"] = serialize($results);
+
+      echo "document.location = 'dashboard.php';\n";
     }
   }
+ ?>
 
-?>
 
-<!DOCTYPE html>
-<html>
-<script type="text/javascript">
-function takemeback() {
-  document.location = "login.php?login=failed";
-}
-
-if(typeof redirectlogin != "undefined"){
-  document.redirectlogin.submit();
-}
-else{
-  takemeback();
-}
 </script>
 </html>
