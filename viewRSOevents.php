@@ -1,3 +1,7 @@
+<?php include 'functions.php';
+  session_start();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,14 +10,15 @@
 <body>
 	<h1>Private Events</h1>
 	
-	<?php include 'functions.php';
+	<?php
 		
-		createUser("test","test","email@.com");
-		$user = getUser("test","test");
-		createRSO("rso","univ","desc",$user);
+		//get current user logged in
+		$user = unserialize($_SESSION["user"]);
+		
+		/*createRSO("rso","univ","desc",$user);
 		createEvent(001333, 00002233,"justin","RSO","desc","phone","email","xmas","loc7 name unique",22.0,23.0,$user);
 		createEvent(001332, 00002233,"justin","RSO","desc","phone","email","xmas","loc8 name unique",22.0,23.0,$user);
-		createEvent(001331, 00002233,"justin","RSO","desc","phone","email","xmas","loc9 name unique",22.0,23.0,$user);
+		createEvent(001331, 00002233,"justin","RSO","desc","phone","email","xmas","loc9 name unique",22.0,23.0,$user);*/
 		
 		$arrayOfData = getRSOEvents($user);
 		

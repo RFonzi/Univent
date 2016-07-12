@@ -1,3 +1,7 @@
+<?php include 'functions.php';
+  session_start();
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,13 +10,14 @@
 <body>
 	<h1>Private Events</h1>
 	
-	<?php include 'functions.php';
+	<?php
 		
-		createUser("test","test","email@.com");
-		$user = getUser("test","test");
-		createEvent(002333, 00002233,"justin","private","desc","phone","email","xmas","loc3 name unique",22.0,23.0,$user);
+		//get current user logged in
+		$user = unserialize($_SESSION["user"]);
+		
+		/*createEvent(002333, 00002233,"justin","private","desc","phone","email","xmas","loc3 name unique",22.0,23.0,$user);
 		createEvent(002332, 00002233,"justin","private","desc","phone","email","xmas","loc4 name unique",22.0,23.0,$user);
-		createEvent(002331, 00002233,"justin","private","desc","phone","email","xmas","loc5 name unique",22.0,23.0,$user);
+		createEvent(002331, 00002233,"justin","private","desc","phone","email","xmas","loc5 name unique",22.0,23.0,$user);*/
 		
 		$arrayOfData = getPrivateEvents($user);
 		
