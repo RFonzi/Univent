@@ -36,6 +36,7 @@
 <head>
   <meta charset="utf-8">
   <title>university events</title>
+  <link href="https://fonts.googleapis.com/css?family=Galada" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 

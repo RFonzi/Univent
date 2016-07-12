@@ -2,6 +2,7 @@
 <html>
 <head>
 	<link rel="stylesheet" href="styles.css">
+	 <link href="https://fonts.googleapis.com/css?family=Galada" rel="stylesheet">
 </head>
 <body>
 	<h1>Create RSO</h1>
@@ -12,7 +13,7 @@
 		<input type="text" name="rsoName" size="25" />
 		<li><label>University Name:</label>
 		<input type="text" name="university" size="25" />
-		<li><label>Description</label>
+		<li><label>Description:</label>
 		<textarea type="text" id="description" name="description" rows="8" cols="50"></textarea>
 		<input type="submit" value="CREATE RSO" />
 	</form>

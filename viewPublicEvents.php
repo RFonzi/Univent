@@ -6,6 +6,7 @@
 <body>
 	<h1>Public Events</h1>
 	
+	<form>
 	<?php include 'functions.php';
 		
 		createUser("test","test","email@.com");
@@ -16,7 +17,7 @@
 		
 		$arrayOfData = getPublicEvents();
 		
-		$html_table = '<table border="1 cellspacing="0" cellpadding="2""><tr><th>Event Name</th><th>Location</th><th>Event Time</th></tr>';
+		$html_table = '<table border="1" cellspacing="0" cellpadding="2" width="100%"><tr><th>Event Name</th><th>Location</th><th>Event Time</th></tr>';
 		
 				
 			
@@ -31,6 +32,7 @@
 		echo $html_table;
 	
 	?>
+	</form>
 	
 	<form action="dashboard.php">
 		<input type="hidden" name="returnFromTable" value=""/>
