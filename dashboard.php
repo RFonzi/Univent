@@ -58,8 +58,14 @@ session_start();
 		<input type="button" value="Submit" onclick="switchPage($('#list option:selected').val());"/>
 	</form>
 
+<input type="button" value="Log out" onclick="runLogout();"/>
+
 </body>
 <script type="text/javascript">
+
+  function runLogout(){
+    document.location = "logout.php";
+  }
 
 	function switchPage(value){
 		console.log("entered function");
