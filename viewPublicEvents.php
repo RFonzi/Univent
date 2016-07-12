@@ -23,7 +23,7 @@
 			
 			for($i=0;$i<count($arrayOfData);$i++)
 			{
-				$html_table .="<tr><td>".$arrayOfData[$i]->e_name."</td><td>".$arrayOfData[$i]->date."</td><td>".$arrayOfData[$i]->time."</td></tr>";
+				$html_table .="<tr><td><a href='viewIndividualEvent.php'>".$arrayOfData[$i]->e_name."</a></td><td>".$arrayOfData[$i]->date."</td><td>".$arrayOfData[$i]->time."</td></tr>";
 			}
 		
 		
