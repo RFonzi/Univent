@@ -87,6 +87,25 @@ class Event_Location
 			  $this->longitude = $longitude;
     }
 }
+
+class RSO
+{
+	public $rid;
+	public $name;
+	public $students;
+	public $university;
+	public $description;
+	
+	public function __construct($rid, $name, $students, $university, $description)
+	{
+              $this->rid = $rid;
+			  $this->name = $name;
+			  $this->students = $students;
+			  $this->university = $university;
+			  $this->description = $description;
+    }
+}
+
 // do not call this directly
 function createConnection()
 {
@@ -112,6 +131,41 @@ function endConnection($conn)
 	return;
 }
 
+function checkEmail($email, $university)
+{
+	$conn = createConnection();
+	if ($conn->connect_error)
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	
+	$sql = "SELECT sid FROM student where email = '$email'";
+	$result = $conn->query($sql);
+	$row = $result->fetch_assoc();
+	$temp =  $row["sid"];
+	
+	$sql = "SELECT name from univ_affil WHERE sid = '$temp'";
+	$result = $conn->query($sql);
+	$row = $result->fetch_assoc();
+	
+	if($row["name"] != $university)
+	{
+		endConnection($conn);
+		return false;
+	}
+	else
+	{
+		endConnection($conn);
+		return true;
+	}
+	
+	$error = $conn->error;
+	endConnection($conn);
+	return $error;
+}
+
 function createComment($sid, $time, $name)
 {
 	$conn = createConnection();
@@ -130,7 +184,9 @@ function createComment($sid, $time, $name)
 	{
 		return true;
 	}
-
+	$result->close();
+	
+	
 	
 	$error = $conn->error;
 	endConnection($conn);
@@ -1198,8 +1254,8 @@ function createUniversity($name, $location, $description, $user)
 	return $error;
 }
 
-//incomplete
-function getUniversity($name)
+
+function getUniversity()
 {
 	$conn = createConnection();
 	if ($conn->connect_error)
@@ -1209,13 +1265,21 @@ function getUniversity($name)
 		return $error;
 	}
 
+	$uni = array();
+	
 	$sql = "SELECT *
-	FROM University WHERE name='$name'";
+	FROM university";
 	$result = $conn->query($sql);
 
 	if ($result->num_rows > 0)
 	{
-		return "university found";
+		while($row = $result->fetch_assoc())
+		{
+			$uni[] = new University($row["name"], $row["location"], $row["description"], $row["students"]);
+			//public function __construct($name, $location, $description, $students)
+			
+		}
+		return $uni;
 	}
 	else
 	{
@@ -1266,57 +1330,46 @@ function createLocation($loc_name, $latitude, $longitude)
 	}
 
 
-	$error = $conn->error;
-		endConnection($conn);
-		return $error;
-}
-
-//depricated for now
-function getLocation($loc_name)
-{
-	$conn = createConnection();
-	if ($conn->connect_error)
-	{
 		$error = $conn->error;
 		endConnection($conn);
 		return $error;
-	}
-
-	$sql = "SELECT *
-	FROM Location WHERE loc_name='$loc_name'";
-	$result = $conn->query($sql);
-
-	if ($result->num_rows > 0)
-	{
-		return "location found";
-	}
-	else
-	{
-		endConnection($conn);
-		return false;
-	}
-
-
-	endConnection($conn);
-	return $result->error;
 }
 
-//depricated for now
-function getRSO($name)
+
+
+function getRSO($user)
 {
 	$conn = createConnection();
 	if ($conn->connect_error)
 	{
 		return $conn->error;
 	}
-
+	
+	$sql = "SELECT name
+	FROM univ_affil WHERE sid = '$user->sid'";
+	$result = $conn->query($sql);
+	$row = $result->fetch_assoc();
+	$uni = $row["name"];
+	
+	$result->close();
+	//return $uni;
+	
+	$rso = array();
+	
 	$sql = "SELECT *
-	FROM RSO WHERE name='$name'";
+	FROM RSO WHERE university = '$uni'";
 	$result = $conn->query($sql);
 
 	if ($result->num_rows > 0)
 	{
-		return "RSO found";
+		while($row = $result->fetch_assoc())
+		{
+			$rso[] = new RSO($row["rid"], $row["name"], $row["students"], $row["university"], $row["description"]);
+			//public function __construct($rid, $name, $students, $university, $description)
+			
+		}
+		return $rso;
+
 	}
 	else
 	{
@@ -1324,9 +1377,9 @@ function getRSO($name)
 		return false;
 	}
 
-
+	$error = $conn->error;
 	endConnection($conn);
-	return "tacos";
+	return $error;
 }
 
 function stringToUser($string)
