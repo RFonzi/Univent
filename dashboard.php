@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html>
-
+<style>
+	h2 {
+		margin-top: 6%;
+	}
+	form {
+		margin-top: 30%;
+	}
+</style>
 <head>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="styles.css">
@@ -12,13 +19,13 @@
 	$user = stringToUser($_POST["user"]);
 
 ?>
-	<div id="pageWrapper">
-		<div id="header">
-			<p id="siteTitle">Univent</p>
-			<p id="signifier">Welcome, <?php print $user->username ?></p>
-		</div>
+	<div>
+		<h1 style="float: left">Univent</h1>
+		<h2 style="float: right">Welcome, <?php print $user->username ?></h2>
+	</div>
+	<hr />
 
-
+	<form>
 	<?php
 		$userpriv = getUserLevel($user->sid);
 		echo "<form name='menuOp' method='post' onsubmit='location.reload()'>\n";
@@ -47,6 +54,7 @@
 	echo "</form>\n";
 	?>
 
+	</form>
 	<?php
 
 
@@ -106,8 +114,6 @@
 
 
 	?>
-
-	</div>
 </body>
 <script type="text/javascript">
 
