@@ -8,29 +8,32 @@
     $email = $_POST["email"];
     $password = $_POST["password"];
 
-    $results = createUser($username, $password, $email);
 
-    if($results){
-      $accttype = $_POST["accttype"];
-      if($accttype == "superadmin"){
-        $results = createSuperAdmin($username, $password, $email);
 
-        if($results == false){
-          echo nl2br("Failed to create superadmin account FOR SOME REASON\n");
-        }
+    $accttype = $_POST["accttype"];
+
+    if($accttype == "superadmin"){
+      $results = createSuperAdmin($username, $password, $email);
+
+      if($results == false){
+        echo nl2br("Failed to create superadmin account FOR SOME REASON\n");
       }
-      else{
-        echo nl2br("Successfully created account! Please log in...\n");
+    }
+    else if($accttype == "user"){
+      $results = createUser($username, $password, $email);
+
+      if($results == false){
+        echo nl2br("Failed to create account. Username is taken.\n");
       }
     }
     else{
-      echo nl2br("Failed to create account. Username is taken.\n");
+      echo nl2br("Successfully created account! Please log in...\n");
     }
 
   }
-    else if(isset($_GET[login]) && $_GET[login] == "failed"){
-      echo nl2br("Invalid credentials. Please try again.");
-    }
+  else if(isset($_GET[login]) && $_GET[login] == "failed"){
+    echo nl2br("Invalid credentials. Please try again.");
+  }
 ?>
 
 <head>
