@@ -220,7 +220,7 @@ function deleteComment($sid, $name, $time)
 		return $error;
 	}
 	
-	$sql = "DELETE FROM comments WHERE sid = '$sid' AND name = '$name', AND time ='$time'";
+	$sql = "DELETE FROM comments WHERE sid = '$sid' AND name = '$name' AND time ='$time'";
 	$result = $conn->query($sql);
 	//$row = $result->fetch_assoc();
 	
@@ -245,7 +245,7 @@ function updateComment($sid, $text, $name, $time)
 		return $error;
 	}
 	
-	$sql = "UPDATE comments SET text = '$text' WHERE sid = '$sid', AND name = '$name', AND time ='$time'";
+	$sql = "UPDATE comments SET text = '$text' WHERE sid = '$sid' AND name = '$name' AND time ='$time'";
 	$result = $conn->query($sql);
 	if($result == true)
 	{
