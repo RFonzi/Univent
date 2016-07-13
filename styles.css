@@ -70,6 +70,14 @@ li {
 	list-style: none;
 }
 
+label{
+	color: black;
+	text-align: center;
+	font-family: 'Oswald', sans-serif;
+	font-size: 150%;
+	list-style: none;
+}
+
 input{
 	width: 20%;
 	padding: 5px 20px;
