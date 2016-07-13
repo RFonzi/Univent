@@ -33,7 +33,7 @@
   }
   else{
     $results = createEvent($time, $date, $e_name, $category, $e_desc,
-				$contact_phone, $contact_email, $type, $loc_name, $latitude, $longitude);
+				$contact_phone, $contact_email, $type, $loc_name, $latitude, $longitude, $user);
   }
 
 
