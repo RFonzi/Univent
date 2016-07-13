@@ -7,6 +7,7 @@
 <head>
 	<link rel="stylesheet" href="styles.css">
 	 <link href="https://fonts.googleapis.com/css?family=Galada" rel="stylesheet">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body>
 	<?php
@@ -66,8 +67,10 @@ for($i=count($comments) - 1; $i >= 0; $i--)
   echo "<label id='commentTime'>".$comments[$i]->timestamps."</label>";
   echo "<label id='commentText'>".$comments[$i]->text."</label>";
   if($comments[$i]->sid == $user->sid){
-    echo "<input type='button' id='editComment' value='Edit' onclick=''>";
-    echo "<input type='button' id='deleteComment' value='Remove' onclick=''>";
+    echo "<input type=\"button\" id=\"editComment\" value=\"Edit\" onclick=\"document.getElementById('edit').style.display='block';document.getElementById('submitEdit').style.display='block';\">";
+    echo "<input type=\"button\" id=\"deleteComment\" value=\"Remove\" onclick=\"document.location='modifyComment.php?index=$index&action=delete';\">";
+    echo "<textarea type='text' id='edit' rows='2' cols='10'>".$comments[$i]->text."</textarea>";
+    echo "<input type=\"button\" id=\"submitEdit\" value=\"Submit\" onclick=\"var text = $('textarea#edit').val(); document.location='modifyComment.php?index=$index&action=edit&text=' + text;\">";
   }
   echo "</div>";
 
