@@ -15,7 +15,12 @@
 		<input type="text" name="university" size="25" />
 		<li><label>Description:</label>
 		<textarea type="text" id="description" name="description" rows="8" cols="50"></textarea>
-		<input type="submit" value="CREATE RSO" />
+		<li><input type="email" placeholder="email@website.com">
+		<li><input type="email" placeholder="email@website.com">
+		<li><input type="email" placeholder="email@website.com">
+		<li><input type="email" placeholder="email@website.com">
+		<li><input type="email" placeholder="email@website.com">
+		<li><input type="submit" value="CREATE RSO" />
 	</form>
 
 

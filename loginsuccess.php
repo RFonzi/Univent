@@ -13,7 +13,8 @@
     $results = getUser($username, $password);
 
     if(!$results){
-      echo "takemeback();\n";
+      echo $results;
+      echo "ERROR getUser() returned false\n";
     }
     else{
       //Old Way with POST
