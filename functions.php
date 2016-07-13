@@ -182,6 +182,54 @@ function getMyRSO($user)
 	return $error;
 }
 
+function deleteComment($sid)
+{
+	$conn = createConnection();
+	if ($conn->connect_error)
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	
+	$sql = "DELETE FROM comments WHERE sid = '$sid'";
+	$result = $conn->query($sql);
+	//$row = $result->fetch_assoc();
+	
+	if($result == true)
+	{
+		return true;
+	}
+
+	
+	$error = $conn->error;
+	endConnection($conn);
+	return $error;
+}
+
+function updateComment($sid, $text)
+{
+	$conn = createConnection();
+	if ($conn->connect_error)
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	
+	$sql = "UPDATE comments SET text = '$text' WHERE sid = '$sid'";
+	$result = $conn->query($sql);
+	if($result == true)
+	{
+		endConnection($conn);
+		return true;
+	}
+	
+	$error = $conn->error;
+	endConnection($conn);
+	return $error;
+}
+
 function checkEmail($email, $university)
 {
 	$conn = createConnection();
@@ -216,6 +264,8 @@ function checkEmail($email, $university)
 	endConnection($conn);
 	return $error;
 }
+
+
 
 function upVote($time, $name)
 {
@@ -365,7 +415,7 @@ function createComment($sid, $time, $name, $text)
 		endConnection($conn);
 		return true;
 	}
-	$result->close();
+	//$result->close();
 	
 	
 	
