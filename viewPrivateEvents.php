@@ -10,6 +10,7 @@
 <body>
 	<h1>Private Events</h1>
 	
+	<form>
 	<?php
 		
 		//get current user logged in
@@ -20,14 +21,15 @@
 		createEvent(002331, 00002233,"justin","private","desc","phone","email","xmas","loc5 name unique",22.0,23.0,$user);*/
 		
 		$arrayOfData = getPrivateEvents($user);
+		$_SESSION["Events"] = serialize($arrayOfData);
 		
-		$html_table = '<table border="1 cellspacing="0" cellpadding="2""><tr><th>Event Name</th><th>Location</th><th>Event Time</th><th>Link to event</th></tr>';
+		$html_table = '<table border="1" cellspacing="0" cellpadding="2" width="100%"><tr><th>Event Name</th><th>Location</th><th>Event Time</th></tr>';
 		
 				
 			
 			for($i=0;$i<count($arrayOfData);$i++)
 			{
-				$html_table .="<tr><td><a href='viewIndividualEvent.php'>".$arrayOfData[$i]->e_name."</a></td><td>".$arrayOfData[$i]->date."</td><td>".$arrayOfData[$i]->time."</td></tr>";
+				$html_table .="<tr><td><a href='viewIndividualEvent.php?$i'>".$arrayOfData[$i]->e_name."</a></td><td>".$arrayOfData[$i]->date."</td><td>".$arrayOfData[$i]->time."</td></tr>";
 			}
 		
 		
@@ -36,6 +38,7 @@
 		echo $html_table;
 	
 	?>
+	</form>
 	
 	<form action="dashboard.php">
 		<input type="hidden" name="returnFromTable" value=""/>

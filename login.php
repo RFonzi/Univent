@@ -31,7 +31,7 @@
     }
 
   }
-  else if(isset($_GET[login]) && $_GET[login] == "failed"){
+  else if(isset($_GET["login"]) && $_GET["login"] == "failed"){
     echo nl2br("Invalid credentials. Please try again.");
   }
 ?>
