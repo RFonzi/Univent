@@ -480,10 +480,7 @@ function joinRSO($rid, $name, $university, $user)
 	$result->close();
 
 
-	$sql = "SELECT *
-	FROM university WHERE name = 'UCF'";
-	$result = $conn->query($sql);
-	$row = $result->fetch_assoc();
+	
 
 	//user is joining a rso from their uni
 	if ($university != $row['name'])
