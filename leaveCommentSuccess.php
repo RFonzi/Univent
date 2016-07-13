@@ -5,16 +5,17 @@
 <html>
 <?php
   echo "<script type='text/javascript'>\n";
-  
+
   //get current user logged in
 	$user = unserialize($_SESSION["user"]);
 	$event = unserialize($_SESSION["IndivEvent"]);
-  
+
   if(isset($_POST["leaveComment"])){
 	$text = $_POST["comment"];
 	$index = $_POST["leaveComment"];
-	
+
 	$results = createComment($user->sid, $event->time, $event->loc_name, $text);
+  //echo($results);
 
     if(!$results){
       echo "takemeback();\n";

@@ -11,13 +11,14 @@
 <body>
 	<?php
 		$events = unserialize($_SESSION["Events"]);
-		print_r($events);
+		$user = unserialize($_SESSION["user"]);
 
 		$index = $_GET["index"];
 
 		$eventObj = $events[$index];
 
-		$comments = getComments($eventObj->time, $eventObj->name);
+    $comments = array();
+		$comments = getComments($eventObj->time, $eventObj->loc_name);
 		$_SESSION["IndivEvent"] = serialize($eventObj);
 	?>
 	<h1><?php echo $eventObj->e_name; ?></h1>
@@ -35,6 +36,12 @@
  &zoom=18">
 </iframe>
 
+<div id='rateEvent'>
+<label id="ratelabel">Rate this event:</label>
+<input type="button" id="upButton" value="+ <?php echo $eventObj->up_votes; ?>" onclick="document.location='rate.php?index=<?php echo $index; ?>&rate=up';">
+<input type="button" id="downButton" value="- <?php echo $eventObj->d_votes; ?>" onclick="document.location='rate.php?index=<?php echo $index; ?>&rate=down';">
+</div>
+
 <form name="leaveComment" action="leaveCommentSuccess.php" method="post">
 <input type="hidden" name="leaveComment" value="<?php echo $index; ?>"/>
 
@@ -42,6 +49,32 @@
 <textarea type="text" id="comment" name="comment" rows="8" cols="50"></textarea>
 <input type="submit" value="Comment!"/>
 </form>
+
+<?php
+function cmp($a, $b)
+{
+    return strcmp($a->timestamps, $b->timestamps);
+}
+
+usort($comments, "cmp");
+
+echo "<div id='userCommentArea'>";
+for($i=count($comments) - 1; $i >= 0; $i--)
+{
+  echo "<div id='commentdiv'>";
+  echo "<label id='commentName'>".getUserName($comments[$i]->sid)."</label>";
+  echo "<label id='commentTime'>".$comments[$i]->timestamps."</label>";
+  echo "<label id='commentText'>".$comments[$i]->text."</label>";
+  if($comments[$i]->sid == $user->sid){
+    echo "<input type='button' id='editComment' value='Edit' onclick=''>";
+    echo "<input type='button' id='deleteComment' value='Remove' onclick=''>";
+  }
+  echo "</div>";
+
+}
+echo "</div>";
+?>
+
 
 
 
