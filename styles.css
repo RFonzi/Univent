@@ -18,6 +18,7 @@ video#bgvid {
     -webkit-column-count: 2;
     -moz-column-count: 2;
     column-count: 2;
+    transform: translate(0%, 35%);
 }
 
 body {
@@ -32,7 +33,7 @@ h1 {
 	color: black;
 	text-align: center;
 	font-family: 'Galada', cursive;
-	font-size: 800%;
+	font-size: 400%;
 	text-shadow: 4px 4px 4px #aaa;
 }
 
