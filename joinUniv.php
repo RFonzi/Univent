@@ -6,6 +6,8 @@ session_start();
  <html>
  <head>
  	<link rel="stylesheet" href="styles.css">
+	<link href="https://fonts.googleapis.com/css?family=Fontdiner+Swanky" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
  </head>
  <body>
 
@@ -54,7 +56,10 @@ if(isset($_POST["univName"])){
 
 ?>
 
-
+	<form action="dashboard.php">
+		<input type="hidden" name="returnFromJoinUniv" value=""/>
+		<input type="submit" value="RETURN TO DASH" />
+	</form>
 
 </body>
 </html>

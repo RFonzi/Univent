@@ -15,6 +15,8 @@ session_start();
 <head>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="styles.css">
+	<link href="https://fonts.googleapis.com/css?family=Fontdiner+Swanky" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body>
@@ -24,11 +26,11 @@ session_start();
 	$user = unserialize($_SESSION["user"]);
 
 ?>
-	<div>
-		<h1 style="float: left">Univent</h1>
-		<h2 style="float: right">Welcome, <?php print $user->username ?></h2>
-	</div>
-	<hr />
+	
+	<h1 style="text-align: left;">University Events</h1>
+	<hr>
+	<h2 style="text-align: left">Welcome, <?php print $user->username ?></h2>
+	
 
 	<form>
 	<?php
@@ -55,10 +57,13 @@ session_start();
 	echo "</select>\n";
 	echo "</form>\n";
 	?>
-		<input type="button" value="Submit" onclick="switchPage($('#list option:selected').val());"/>
+	
 	</form>
 
-<input type="button" value="Log out" onclick="runLogout();"/>
+	<div id="dashbuttons">
+		<input type="button" value="Submit" onclick="switchPage($('#list option:selected').val());"/>
+		<input type="button" value="Log out" onclick="runLogout();"/>
+	</div>
 
 </body>
 <script type="text/javascript">

@@ -6,6 +6,8 @@
 <html>
 <head>
 	<link rel="stylesheet" href="styles.css">
+	<link href="https://fonts.googleapis.com/css?family=Fontdiner+Swanky" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
 </head>
 <body>
 	<h1>Public Events</h1>

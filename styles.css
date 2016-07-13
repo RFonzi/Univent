@@ -49,15 +49,23 @@ body {
 h1 {
 	color: black;
 	text-align: center;
-	font-family: 'Galada', cursive;
+	font-family: 'Fontdiner Swanky', cursive;
 	font-size: 400%;
+	text-shadow: 4px 4px 4px #aaa;
+}
+
+h2 {
+	color: black;
+	text-align: center;
+	font-family: 'Oswald', sans-serif;
+	font-size: 200%;
 	text-shadow: 4px 4px 4px #aaa;
 }
 
 li {
 	color: black;
 	text-align: center;
-	font-family: verdana;
+	font-family: 'Oswald', sans-serif;
 	font-size: 150%;
 	list-style: none;
 }
@@ -82,7 +90,8 @@ textarea {
 
 form {
 	text-align: center;
-	vertical-align: bottom;
+	vertical-align: top;
+	margin-top: 0%;
 }
 
 table {
@@ -94,4 +103,8 @@ input[type=radio]:not(old){
   width   : 10%;
   padding : 30px;
   opacity : 255;
+}
+
+div[id=dashbuttons] {
+	text-align: center;
 }

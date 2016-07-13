@@ -6,7 +6,8 @@
 <html>
 <head>
 	<link rel="stylesheet" href="styles.css">
-	 <link href="https://fonts.googleapis.com/css?family=Galada" rel="stylesheet">
+	 <link href="https://fonts.googleapis.com/css?family=Fontdiner+Swanky" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
 </head>
 <body>
 	<h1>Join RSO</h1>
@@ -34,7 +35,10 @@
 
 	?>
 
-	//if a user clicks an rso, link to new page, add them to rso, link THAT page back to dash
+	<form action="dashboard.php">
+		<input type="hidden" name="returnFromjoinRSO" value=""/>
+		<input type="submit" value="RETURN TO DASH" />
+	</form>
 
 
 </body>

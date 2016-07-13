@@ -6,7 +6,8 @@
 <html>
 <head>
 	<link rel="stylesheet" href="styles.css">
-	 <link href="https://fonts.googleapis.com/css?family=Galada" rel="stylesheet">
+	 <link href="https://fonts.googleapis.com/css?family=Fontdiner+Swanky" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body>
@@ -24,9 +25,6 @@
 	?>
 	<h1><?php echo $eventObj->e_name; ?></h1>
 
-//display all attributes of event
-
-//buttons for up/down vote
 
 <iframe
  width="450"
