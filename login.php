@@ -45,6 +45,10 @@
 
 <body>
 
+<div id="loginarea">
+
+  <div id="loginbox">
+
     <h1>Log in as an existing user...</h1>
     <form name="login" action="loginsuccess.php" method="post">
       <input type="hidden" name="login" value=""/>
@@ -56,7 +60,9 @@
       <input type="submit" value="Log in">
     </form>
 
-    <hr>
+  </div>
+
+  <div id="signupbox">
 
     <h1>Sign up as a new user...</h1>
     <form name="signup" action="login.php" method="post">
@@ -74,6 +80,9 @@
       <input type="submit" value="Sign Up">
     </form>
 
+  </div>
+
+</div>
 
 
 </body>
