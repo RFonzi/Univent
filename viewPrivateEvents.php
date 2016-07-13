@@ -23,7 +23,7 @@
 		$arrayOfData = getPrivateEvents($user);
 		$_SESSION["Events"] = serialize($arrayOfData);
 
-		$html_table = '<table border="1" cellspacing="0" cellpadding="2" width="100%"><tr><th>Event Name</th><th>Location</th><th>Event Time</th></tr>';
+		$html_table = '<table border="1" cellspacing="0" cellpadding="2" width="100%"><tr><th>Event Name</th><th>Date</th><th>Event Time</th></tr>';
 
 
 
