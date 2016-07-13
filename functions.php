@@ -149,6 +149,39 @@ function endConnection($conn)
 	return;
 }
 
+function getMyRSO($user)
+{
+	$conn = createConnection();
+	if ($conn->connect_error)
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	
+	$sql = "SELECT rid FROM ownsrso WHERE sid = '$user->sid'";
+	$result = $conn->query($sql);
+	
+	//return $user->sid;
+	
+	if ($result->num_rows == 0)
+	{
+		endConnection($conn);
+		return false;
+	}
+	else
+	{
+		$row = $result->fetch_assoc();
+		$temp = $row["rid"];
+		endConnection($conn);
+		return $temp;
+	}
+	
+	$error = $conn->error;
+	endConnection($conn);
+	return $error;
+}
+
 function checkEmail($email, $university)
 {
 	$conn = createConnection();
