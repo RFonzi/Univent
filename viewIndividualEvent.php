@@ -12,11 +12,11 @@
 	<?php
 		$events = unserialize($_SESSION["Events"]);
 		print_r($events);
-		
+
 		$index = $_GET["index"];
-		
+
 		$eventObj = $events[$index];
-		
+
 		$comments = getComments($eventObj->time, $eventObj->name);
 		$_SESSION["IndivEvent"] = serialize($eventObj);
 	?>
@@ -26,14 +26,6 @@
 
 //buttons for up/down vote
 
-<form name="leaveComment" action="leaveCommentSuccess.php" method="post">
-<input type="hidden" name="leaveComment" value="<?php echo $index; ?>"/>
-
-<li><label>Comments</label>
-<textarea type="text" id="comment" name="comment" rows="8" cols="50"></textarea>
-<input type="submit" value="Comment!"/>
-</form>
-
 <iframe
  width="450"
  height="250"
@@ -42,6 +34,14 @@
  &q= <?php echo $eventObj->latitude.",". $eventObj->longitude; ?>
  &zoom=18">
 </iframe>
+
+<form name="leaveComment" action="leaveCommentSuccess.php" method="post">
+<input type="hidden" name="leaveComment" value="<?php echo $index; ?>"/>
+
+<li><label>Comments</label>
+<textarea type="text" id="comment" name="comment" rows="8" cols="50"></textarea>
+<input type="submit" value="Comment!"/>
+</form>
 
 
 
