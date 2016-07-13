@@ -19,12 +19,12 @@
 
 		$arrayOfData = getRSOEvents($user);
 		$_SESSION["Events"] = serialize($arrayOfData);
-		
+
 		$html_table = '<table border="1" cellspacing="0" cellpadding="2" width="100%"><tr><th>Event Name</th><th>Location</th><th>Event Time</th></tr>';
 
 			for($i=0;$i<count($arrayOfData);$i++)
 			{
-				$html_table .="<tr><td><a href='viewIndividualEvent.php?$i'>".$arrayOfData[$i]->e_name."</a></td><td>".$arrayOfData[$i]->date."</td><td>".$arrayOfData[$i]->time."</td></tr>";
+				$html_table .="<tr><td><a href='viewIndividualEvent.php?index=$i'>".$arrayOfData[$i]->e_name."</a></td><td>".$arrayOfData[$i]->date."</td><td>".$arrayOfData[$i]->time."</td></tr>";
 			}
 
 
@@ -35,7 +35,7 @@
 	?>
 
 	</form>
-	
+
 	<form action="dashboard.php">
 		<input type="hidden" name="returnFromTable" value=""/>
 		<input type="submit" value="RETURN TO DASH" />
