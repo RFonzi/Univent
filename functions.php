@@ -124,6 +124,8 @@ class RSO
     }
 }
 
+
+
 // do not call this directly
 function createConnection()
 {
@@ -147,6 +149,32 @@ function endConnection($conn)
 {
 	$conn->close();
 	return;
+}
+
+function getUserName($sid)
+{
+	$conn = createConnection();
+	if ($conn->connect_error)
+	{
+		$error = $conn->error;
+		endConnection($conn);
+		return $error;
+	}
+	
+	$sql = "SELECT name FROM user WHERE sid = '$sid'";
+	$result = $conn->query($sql);
+	if($result->num_rows > 0)
+	{
+		$row = $result->fetch_assoc();
+		$temp = $row["name"];
+		endConnection($conn);
+		return $temp;
+	}
+	
+	
+	$error = $conn->error;
+	endConnection($conn);
+	return $error;
 }
 
 function getMyRSO($user)
