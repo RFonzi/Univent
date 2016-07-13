@@ -235,7 +235,7 @@ function deleteComment($sid, $name, $time)
 	return $error;
 }
 
-function updateComment($sid, $text)
+function updateComment($sid, $text, $name, $time)
 {
 	$conn = createConnection();
 	if ($conn->connect_error)
@@ -245,7 +245,7 @@ function updateComment($sid, $text)
 		return $error;
 	}
 	
-	$sql = "UPDATE comments SET text = '$text' WHERE sid = '$sid'";
+	$sql = "UPDATE comments SET text = '$text' WHERE sid = '$sid', AND name = '$name', AND time ='$time'";
 	$result = $conn->query($sql);
 	if($result == true)
 	{
