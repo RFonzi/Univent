@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <?php
-  echo "<script type='text/javascript'>\n";
+
 
   //get current user logged in
 	$user = unserialize($_SESSION["user"]);
@@ -26,7 +26,10 @@
   $userpriv = getUserLevel($user->sid);
 
   if($userpriv == 2 && $category == "RSO"){
-    
+    $rid = getMyRSO($user);
+    $results = createRSOEvent($time, $date, $e_name, $category, $e_desc,
+				$contact_phone, $contact_email, $type, $loc_name, $latitude, $longitude, $user, $rid);
+
   }
   else{
     $results = createEvent($time, $date, $e_name, $category, $e_desc,
@@ -34,7 +37,7 @@
   }
 
 
-
+  echo "<script type='text/javascript'>\n";
     if(!$results){
       echo "takemeback();\n";
     }
