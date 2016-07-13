@@ -6,10 +6,10 @@
 <html>
 <?php
   echo "<script type='text/javascript'>\n";
-  
+
   //get current user logged in
 	$user = unserialize($_SESSION["user"]);
-  
+
   if(isset($_POST["createEvent"])){
     $time = $_POST["time"];
 	$date = $_POST["date"];
@@ -22,10 +22,18 @@
 	$loc_name = $_POST["loc"];
 	$latitude = $_POST["lat"];
 	$longitude = $_POST["long"];
-	
-	
-    $results = createEvent($time, $date, $e_name, $category, $e_desc, 
+
+  $userpriv = getUserLevel($user->sid);
+
+  if($userpriv == 2 && $category == "RSO"){
+    
+  }
+  else{
+    $results = createEvent($time, $date, $e_name, $category, $e_desc,
 				$contact_phone, $contact_email, $type, $loc_name, $latitude, $longitude);
+  }
+
+
 
     if(!$results){
       echo "takemeback();\n";

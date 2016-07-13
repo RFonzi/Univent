@@ -73,10 +73,10 @@
       <input name="email" type="email" pattern="[a-zA-Z0-9!@#$%^*_|.]{1,50}" placeholder="email@website.com">
       <li><label>Password</label>
       <input name="password" type="password" pattern="[a-zA-Z0-9!@#$%^*_|.]{1,20}" placeholder="password">
-      <li style="font-size: 75%">
-        <input name="accttype" type="radio" name="userprivilege" value="user" checked> User
-        <input name="accttype" type="radio" name="userprivilege" value="superadmin"> Super Admin
-      <li>
+      <li style="font-size: 100%">
+        <input name="accttype" type="radio" name="userprivilege" value="user" checked>User
+<input name="accttype" type="radio" name="userprivilege" value="superadmin">Super Admin
+<li>
       <input type="submit" value="Sign Up">
     </form>
 

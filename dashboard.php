@@ -42,7 +42,7 @@ session_start();
 				echo "<option value='joinUniv'>Start attending a university</option>\n";
 			}
 		}
-		if($userpriv > 1 && $userpriv != 3){
+		if($userpriv >= 1 && $userpriv != 3){
 			echo "<option value='viewPrivate'>View Private Events</option>\n";
 			echo "<option value='viewRSO'>View RSO Events</option>\n";
 			echo "<option value='joinRSO'>Join RSO</option>\n";

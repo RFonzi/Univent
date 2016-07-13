@@ -6,8 +6,8 @@
 </head>
 <body>
 	<h1>Create RSO</h1>
-	
-	<form name="createRSO" action="createEventsSuccess.php" method="post">
+
+	<form name="createRSO" action="createRSOSuccess.php" method="post">
 		<input type="hidden" name="createRSO" value=""/>
 		<li><label>RSO Name:</label>
 		<input type="text" name="rsoName" size="25" />

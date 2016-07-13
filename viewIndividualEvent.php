@@ -14,13 +14,12 @@
 
 //buttons for up/down vote
 
-
 <form name="leaveComment">
 <li><label>Description</label>
 <textarea type="text" id="description" name="description" rows="8" cols="50"></textarea>
 <input type="submit" value="Comment!" />
 </form>
-	
+
 <iframe
  width="450"
  height="250"
@@ -31,7 +30,7 @@
 </iframe>
 
 
-	
+
 	<form action="dashboard.php">
 		<input type="hidden" name="returnFromTable" value=""/>
 		<input type="submit" value="RETURN TO DASH" />
