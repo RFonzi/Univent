@@ -14,11 +14,7 @@
 	$text = $_POST["comment"];
 	$index = $_POST["leaveComment"];
 	
-	$a = $event->time;
-	settype($a, "string");
-	echo gettype($event->time);
-	
-	$results = createComment($user->sid, $a, $event->e_name, $text);
+	$results = createComment($user->sid, $event->time, $event->loc_name, $text);
 
     if(!$results){
       echo "takemeback();\n";
