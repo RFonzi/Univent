@@ -25,7 +25,7 @@
 	?>
 	<h1><?php echo $eventObj->e_name; ?></h1>
 
-
+<form>
 <iframe
  width="450"
  height="250"
@@ -34,18 +34,21 @@
  &q= <?php echo $eventObj->latitude.",". $eventObj->longitude; ?>
  &zoom=18">
 </iframe>
+</form>
 
+<form>
 <div id='rateEvent'>
 <label id="ratelabel">Rate this event:</label>
-<input type="button" id="upButton" value="+ <?php echo $eventObj->up_votes; ?>" onclick="document.location='rate.php?index=<?php echo $index; ?>&rate=up';">
-<input type="button" id="downButton" value="- <?php echo $eventObj->d_votes; ?>" onclick="document.location='rate.php?index=<?php echo $index; ?>&rate=down';">
+<input type="button" style="width: 50px" id="upButton" value="+ <?php echo $eventObj->up_votes; ?>" onclick="document.location='rate.php?index=<?php echo $index; ?>&rate=up';">
+<input type="button" style="width: 50px" id="downButton" value="- <?php echo $eventObj->d_votes; ?>" onclick="document.location='rate.php?index=<?php echo $index; ?>&rate=down';">
 </div>
+</form>
 
 <form name="leaveComment" action="leaveCommentSuccess.php" method="post">
 <input type="hidden" name="leaveComment" value="<?php echo $index; ?>"/>
 
 <li><label>Comments</label>
-<textarea type="text" id="comment" name="comment" rows="8" cols="50"></textarea>
+<textarea type="text" id="comment" name="comment" rows="8" cols="15"></textarea>
 <input type="submit" value="Comment!"/>
 </form>
 
