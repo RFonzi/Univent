@@ -210,7 +210,7 @@ function getMyRSO($user)
 	return $error;
 }
 
-function deleteComment($sid)
+function deleteComment($sid, $name, $time)
 {
 	$conn = createConnection();
 	if ($conn->connect_error)
@@ -220,7 +220,7 @@ function deleteComment($sid)
 		return $error;
 	}
 	
-	$sql = "DELETE FROM comments WHERE sid = '$sid'";
+	$sql = "DELETE FROM comments WHERE sid = '$sid' AND name = '$name', AND time ='$time'";
 	$result = $conn->query($sql);
 	//$row = $result->fetch_assoc();
 	
