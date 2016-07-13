@@ -774,7 +774,19 @@ function getRSOEvents($user)
 		$studentrso[] = $row["rid"];
 	}
 	
+	$result->close();
 	
+	$sql = "SELECT *
+	FROM ownsrso WHERE sid = '$user->sid'";
+	$result = $conn->query($sql);
+	
+	if($result != null)
+	{
+		while($row = $result->fetch_assoc())
+		{
+			$studentrso[] = $row["rid"];
+		}
+	}
 	$result->close();
 	//return $studentrso;
 	
