@@ -1,4 +1,2 @@
-[TODO]
-*fix sign up text to show up
-*add success on joining university
-*BACK BUTTONS EVERYWHERE
+University Events
+Project for COP4710 Summer 2016
